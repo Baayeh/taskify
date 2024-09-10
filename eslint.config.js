@@ -34,6 +34,7 @@ export default tseslint.config(
     settings: {
       react: {
         version: "detect",
+        defaultVersion: "18.3",
       },
     },
     rules: {
