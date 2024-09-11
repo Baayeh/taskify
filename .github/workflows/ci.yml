@@ -2,34 +2,34 @@ name: CI
 
 on:
   push:
-    branches: ["main", "staged"]
+    branches: ["main", "staged", "dev"]
   pull_request:
-    branches: ["main", "staged"]
+    branches: ["main", "staged", "dev"]
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [16.x, 18.x, 20.x]
-
     steps:
+      # Step 1: Checkout the code
       - uses: actions/checkout@v3
 
-      - name: Use Node.js ${{ matrix.node-version }}
+      # Step 2: Set up Node.js
+      - name: Use Node.js 20.x
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 20.x
 
+      # Step 3: Install dependencies
       - name: Install dependencies
         run: npm install
 
       # - name: Run tests
       #   run: npm test
 
-      - name: Build
-        run: npm run build
+      # Step 5: Build the project
+      # - name: Build
+      #   run: npm run build
 
       # Optional Deployment Step
       # - name: Deploy
