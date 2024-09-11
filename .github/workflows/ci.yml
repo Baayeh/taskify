@@ -15,19 +15,31 @@ jobs:
         node-version: [16.x, 18.x, 20.x]
 
     steps:
+      # Step 1: Checkout the code
       - uses: actions/checkout@v3
 
+      # Step 2: Set up Node.js
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
 
+      # Step 3: Install dependencies
       - name: Install dependencies
         run: npm install
+
+        # Step 4: Run ESLint check
+      - name: Run ESLint
+        run: npm run lint
+
+      # Step 5: Run Stylelint and Prettier check
+      - name: Run ESLint
+        run: npm run lint:css
 
       # - name: Run tests
       #   run: npm test
 
+      # Step 5: Build the project
       - name: Build
         run: npm run build
 
