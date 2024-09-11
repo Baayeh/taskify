@@ -28,13 +28,9 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-        # Step 4: Run ESLint check
+      # Step 4: Run ESLint, Stylelint and Prettier check
       - name: Run ESLint
-        run: npm run lint
-
-      # Step 5: Run Stylelint and Prettier check
-      - name: Run ESLint
-        run: npm run lint:css
+        run: npm run lint && npm run lint:css
 
       # - name: Run tests
       #   run: npm test
