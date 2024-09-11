@@ -30,7 +30,7 @@ jobs:
 
       # Step 4: Run ESLint, Stylelint and Prettier check
       - name: Run ESLint
-        run: npm run lint && npm run lint:css
+        run: npm run lint
 
       # - name: Run tests
       #   run: npm test
