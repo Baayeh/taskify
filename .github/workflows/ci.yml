@@ -29,7 +29,7 @@ jobs:
         run: npm install
 
       # Step 4: Run ESLint, Stylelint and Prettier check
-      - name: Run ESLint
+      - name: linters
         run: npm run lint
 
       # - name: Run tests
