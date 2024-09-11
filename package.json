@@ -20,7 +20,7 @@
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx,css,scss,md}": [
       "eslint --cache --fix",
-      "npm run lint:css"
+      "prettier --write"
     ]
   },
   "dependencies": {
