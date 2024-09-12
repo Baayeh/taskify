@@ -1,4 +1,4 @@
-export { ThemeProvider, useTheme } from "./ThemeProvider";
+export { ThemeProvider } from "./ThemeProvider";
 
 export { default as Header } from "./header/Header";
 
