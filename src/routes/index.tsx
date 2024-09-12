@@ -1,4 +1,6 @@
+import { tasksRoutes } from "@/features/tasks";
 import { DashboardLayout, RootLayout } from "../layouts";
+import { Navigate } from "react-router-dom";
 
 const routes = [
   {
@@ -7,7 +9,12 @@ const routes = [
     children: [
       {
         index: true,
+        element: <Navigate to="/tasks" />,
+      },
+      {
+        path: "/tasks",
         element: <DashboardLayout />,
+        children: [...tasksRoutes],
       },
     ],
   },
