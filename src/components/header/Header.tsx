@@ -1,11 +1,14 @@
 import { Menu } from "lucide-react";
 import { Button } from "../ui/button";
+import { usePageTitle } from "@/hooks/usePageTitle";
 
 interface HeaderProps {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const Header: React.FC<HeaderProps> = ({ setOpen }) => {
+  const { title, icon, color } = usePageTitle();
+
   return (
     <header>
       <div>
@@ -19,6 +22,16 @@ const Header: React.FC<HeaderProps> = ({ setOpen }) => {
             <Menu className="text-primary" />
           </Button>
         </div>
+        <section>
+          <div>
+            <h1
+              className={`text-3xl font-semibold flex items-center gap-x-5 ${color}`}
+            >
+              {icon}
+              <span>{title}</span>
+            </h1>
+          </div>
+        </section>
       </div>
     </header>
   );

@@ -12,7 +12,7 @@ const DashboardLayout = () => {
         <nav id="sidebar" className="fixed hidden md:block w-[20rem] h-screen">
           <SideBar />
         </nav>
-        <div className="md:ml-[20rem] p-5 md:p-10">
+        <div className="md:ml-[20rem] p-5 md:p-14">
           <Header setOpen={setOpenMenu} />
           <main>
             <Outlet />
