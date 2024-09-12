@@ -1,55 +1,61 @@
-import profile from "../../assets/creed.webp";
-import { ChevronsUpDown, Settings, UserCog } from "lucide-react";
+import { ListPlus, Plus, Search } from "lucide-react";
+import { Input } from "../ui/input";
+import { Label } from "../ui/label";
+import AccountSettings from "./AccountSettings";
+import MenuList from "./MenuList";
+import { ScrollArea } from "../ui/scroll-area";
 import { Button } from "../ui/button";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "../ui/tooltip";
 
 const SideBar = () => {
   return (
-    <nav
-      id="sidebar"
-      className="fixed hidden md:block bg-muted w-[20rem] h-screen p-2
-      "
-    >
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
+    <nav id="sidebar" className="fixed hidden md:block w-[20rem] h-screen">
+      <AccountSettings />
+
+      <div className="mt-1">
+        <Label htmlFor="search" className="relative">
+          <Input
+            id="search"
+            placeholder="Search..."
+            className="border-muted-foreground/30 border-b-2 border-b-foreground/50 focus-visible:ring-0 focus:border-b-primary"
+          />
+          <Search
+            size={16}
+            className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground"
+          />
+        </Label>
+      </div>
+      <ScrollArea className="relative w-full h-[calc(100vh-116px)] px-4 py-2">
+        <MenuList />
+
+        <div className="absolute left-0 bottom-10 flex items-center justify-between gap-x-3 w-full">
           <Button
+            size="lg"
             variant="ghost"
-            className="w-full justify-start gap-x-3 h-20 focus-visible:ring-0"
+            className="w-full justify-start items-center gap-x-4"
           >
-            <div className="text-4xl font-bold rounded-full bg-background border">
-              <img
-                src={profile}
-                alt="AC"
-                className="rounded-full w-12 h-12 object-cover"
-              />
-            </div>
-            <div className="text-start">
-              <h2 className="text-lg font-semibold">Adonis Creed</h2>
-              <p className="text-sm text-gray-300 flex items-center">
-                <span>adonis.creed@gmail.com</span>
-                <span>
-                  <ChevronsUpDown size={14} />
-                </span>
-              </p>
-            </div>
+            <Plus size={16} />
+            <span className="text-base">New list</span>
           </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-[18rem] p-0 bg-muted border border-muted-foreground/30">
-          <DropdownMenuItem className="p-4 flex items-center gap-x-5 text-muted-foreground hover:!bg-muted-foreground/10 hover:text-foreground border-b border-muted-foreground/30">
-            <UserCog />
-            <span className="text-base">Manage accounts</span>
-          </DropdownMenuItem>
-          <DropdownMenuItem className="p-4 flex items-center gap-x-5 text-muted-foreground hover:!bg-muted-foreground/10 hover:text-foreground border-b border-muted-foreground/30">
-            <Settings />
-            <span className="text-base">Settings</span>
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button size="icon" variant="ghost" className="w-12 h-10">
+                  <ListPlus />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Create a new group</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </div>
+      </ScrollArea>
     </nav>
   );
 };
