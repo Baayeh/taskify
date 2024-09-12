@@ -2,7 +2,7 @@ import { Tasks } from ".";
 
 const tasksRoutes = [
   {
-    path: "tasks",
+    index: true,
     element: <Tasks />,
   },
 ];
