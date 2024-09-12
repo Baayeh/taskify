@@ -14,7 +14,7 @@ import {
 
 const SideBar = () => {
   return (
-    <nav id="sidebar" className="fixed hidden md:block w-[20rem] h-screen">
+    <>
       <AccountSettings />
 
       <div className="mt-1">
@@ -30,6 +30,7 @@ const SideBar = () => {
           />
         </Label>
       </div>
+
       <ScrollArea className="relative w-full h-[calc(100vh-116px)] px-4 py-2">
         <MenuList />
 
@@ -56,7 +57,7 @@ const SideBar = () => {
           </TooltipProvider>
         </div>
       </ScrollArea>
-    </nav>
+    </>
   );
 };
 
