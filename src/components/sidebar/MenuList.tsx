@@ -31,7 +31,7 @@ const links: LinkProp[] = [
   },
   {
     name: "Tasks",
-    route: "/",
+    route: "/tasks",
     icon: <Home size={20} className="text-primary" />,
   },
 ];
