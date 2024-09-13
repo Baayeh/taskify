@@ -1,5 +1,11 @@
 import { Outlet } from "react-router-dom";
-import { Header, SideBar } from "../components";
+import {
+  CreateTask,
+  Header,
+  Loader,
+  LoaderProvider,
+  SideBar,
+} from "../components";
 import { useState } from "react";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 
@@ -7,17 +13,20 @@ const DashboardLayout = () => {
   const [openMenu, setOpenMenu] = useState(false);
 
   return (
-    <>
-      <section className="lg:w-[90%] mx-auto min-h-screen">
-        <nav id="sidebar" className="fixed hidden md:block w-[20rem] h-screen">
+    <LoaderProvider>
+      <section className="relative lg:w-[80%] mx-auto h-screen border-x">
+        <nav className="fixed hidden md:block w-[20rem]">
           <SideBar />
         </nav>
-        <div className="md:ml-[20rem] p-5 md:p-14">
+        <div className="relative md:ml-[20rem] p-5 sm:px-10 md:px-14 md:pb-0 h-screen">
           <Header setOpen={setOpenMenu} />
           <main>
             <Outlet />
           </main>
+          <CreateTask />
         </div>
+
+        <Loader />
       </section>
 
       {openMenu && (
@@ -27,7 +36,7 @@ const DashboardLayout = () => {
           </SheetContent>
         </Sheet>
       )}
-    </>
+    </LoaderProvider>
   );
 };
 
