@@ -1,9 +1,9 @@
-import { Tasks } from ".";
+import { AllTasks } from ".";
 
 const tasksRoutes = [
   {
     index: true,
-    element: <Tasks />,
+    element: <AllTasks />,
   },
 ];
 

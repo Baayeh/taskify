@@ -6,12 +6,33 @@ import {
   LoaderProvider,
   SideBar,
 } from "../components";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
-import { ScrollArea } from "@/components/ui/scroll-area";
 
 const DashboardLayout = () => {
   const [openMenu, setOpenMenu] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  const [open, setOpen] = useState(false);
+  const [task, setTask] = useState("");
+
+  const handleClickOutside = (event: MouseEvent) => {
+    if (ref.current && !ref.current.contains(event.target as Node)) {
+      console.log("first");
+      setOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    if (open && !task) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [open, task]);
 
   return (
     <LoaderProvider>
@@ -22,11 +43,15 @@ const DashboardLayout = () => {
         <div className="relative md:ml-[20rem] p-5 sm:px-10 md:px-14 md:pb-0 h-screen">
           <Header setOpen={setOpenMenu} />
           <main className="mt-5">
-            <ScrollArea className="relative w-full h-[calc(100vh-15rem)] md:h-[calc(100vh-12rem)]">
-              <Outlet />
-            </ScrollArea>
+            <Outlet />
           </main>
-          <CreateTask />
+          <CreateTask
+            divRef={ref}
+            open={open}
+            setOpen={setOpen}
+            task={task}
+            setTask={setTask}
+          />
         </div>
 
         <Loader />

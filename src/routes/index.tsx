@@ -1,4 +1,4 @@
-import { tasksRoutes } from "@/features/tasks";
+import { tasksRoutes } from "@/features";
 import { DashboardLayout, RootLayout } from "../layouts";
 import { Navigate } from "react-router-dom";
 
