@@ -11,7 +11,7 @@
     "lint:fix": "eslint --fix .",
     "lint:css": "prettier --check . && stylelint \"**/*.{css,scss}\" --fix",
     "preview": "vite preview",
-    "prepare": "cd frontend && husky"
+    "prepare": "husky"
   },
   "engines": {
     "npm": ">=10.0.0",
