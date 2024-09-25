@@ -2,16 +2,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Task } from "@/types/tasks";
-import {
-  Bell,
-  Calendar,
-  Dot,
-  File,
-  Paperclip,
-  RefreshCw,
-  Star,
-} from "lucide-react";
+import { Bell, Calendar, Dot, File, RefreshCw, Star } from "lucide-react";
 import { useState } from "react";
+import { format } from "date-fns";
 
 interface CardProps {
   task: Task;
@@ -31,12 +24,9 @@ const TaskCard: React.FC<CardProps> = ({ task }) => {
     setImportant(!important);
   };
 
-  console.log("checked: ", checked);
-  console.log("important: ", important);
-
   return (
     <Card
-      className="bg-muted/50 rounded-md hover:cursor-pointer hover:bg-muted transition-colors duration-300 ease-in-out"
+      className="bg-muted/50 mb-3 rounded-md hover:cursor-pointer hover:bg-muted transition-colors duration-300 ease-in-out"
       onClick={() => console.log("Card clicked")}
     >
       <CardContent className="px-5 py-3 flex justify-between">
@@ -44,34 +34,50 @@ const TaskCard: React.FC<CardProps> = ({ task }) => {
           <Checkbox
             className="rounded-full w-5 h-5"
             onClick={markAsCompleted}
-            checked={checked}
+            checked={task.completed}
           />
           <div>
             <h3
-              className={`${checked ? "line-through text-muted-foreground" : ""}`}
+              className={`${task.completed ? "line-through text-muted-foreground" : ""}`}
             >
-              {task.title || "Pay utilities bill by Saturday 6pm"}
+              {task.title}
             </h3>
 
             <div className="mt-1 text-xs text-muted-foreground flex items-center gap-x-3 sm:gap-x-1">
               <div className="flex items-center gap-x-2">
-                <p className="flex items-center gap-x-1">
-                  <Calendar size={12} />
-                  <span>Sat, 21 Sep</span>
-                </p>
+                {task.due_date && (
+                  <p className="flex items-center gap-x-1">
+                    <Calendar size={12} />
+                    <span>{format(task.due_date, "EEE, dd MMM")}</span>
+                  </p>
+                )}
 
-                <RefreshCw size={12} />
+                {task.repeat && <RefreshCw size={12} />}
               </div>
-              <Dot className="hidden sm:block" />
-              <p className="flex items-center gap-x-1">
-                <Bell size={12} />
-                <span className="hidden sm:block">Wed, 18 Sep</span>
-              </p>
-              <Dot className="hidden sm:block" />
-              <div className="flex items-center gap-x-1">
-                <Paperclip size={12} className="rotate-[135deg]" />
-                <File size={12} />
-              </div>
+              {(task.due_date || task.repeat) &&
+              (task.reminder || task.note) ? (
+                <Dot className="hidden sm:block" />
+              ) : null}
+
+              {task.reminder && (
+                <>
+                  <p className="flex items-center gap-x-1">
+                    <Bell size={12} />
+                    <span className="hidden sm:block">
+                      {format(task.reminder, "EEE, dd MMM")}
+                    </span>
+                  </p>
+
+                  <Dot className="hidden sm:block" />
+                </>
+              )}
+
+              {task.note && (
+                <div className="flex items-center gap-x-1">
+                  {/* <Paperclip size={12} className="rotate-[135deg]" /> */}
+                  <File size={12} />
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -84,8 +90,8 @@ const TaskCard: React.FC<CardProps> = ({ task }) => {
           >
             <Star
               size={20}
-              fill={important ? "#6d28d9" : "none"}
-              stroke={important ? "#6d28d9" : "currentColor"}
+              fill={task.important ? "#6d28d9" : "none"}
+              stroke={task.important ? "#6d28d9" : "currentColor"}
             />
           </Button>
         </div>
