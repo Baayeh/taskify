@@ -65,4 +65,9 @@ export const selectPlannedTasksCount = createSelector(
       .length
 );
 
+export const selectMyDayTasksCount = createSelector(
+  (state: RootState) => state.tasks.tasks,
+  (tasks) => tasks.filter((task) => task.my_day).length
+);
+
 export default taskSlice.reducer;

@@ -3,7 +3,11 @@ import React, { useCallback } from "react";
 import { NavLink } from "react-router-dom";
 import { Badge } from "../ui/badge";
 import { useAppSelector } from "@/lib/utils";
-import { selectImportantTasksCount } from "@/features/redux/slices/taskSlice";
+import {
+  selectImportantTasksCount,
+  selectMyDayTasksCount,
+  selectPlannedTasksCount,
+} from "@/features/redux/slices/taskSlice";
 
 interface LinkProp {
   name: string;
@@ -41,14 +45,18 @@ const links: LinkProp[] = [
 
 const MenuList = () => {
   const importantTasksCount = useAppSelector(selectImportantTasksCount);
+  const plannedTasksCount = useAppSelector(selectPlannedTasksCount);
+  const myDayTasksCount = useAppSelector(selectMyDayTasksCount);
 
   const getCount = useCallback(
     (name: string) => {
       switch (name) {
         case "My Day":
-          return 0;
+          return myDayTasksCount;
         case "Important":
           return importantTasksCount;
+        case "Planned":
+          return plannedTasksCount;
         default:
           return 0;
       }
