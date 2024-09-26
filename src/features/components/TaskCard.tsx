@@ -5,6 +5,10 @@ import { Task } from "@/types/tasks";
 import { Bell, Calendar, Dot, File, RefreshCw, Star } from "lucide-react";
 import { useState } from "react";
 import { format } from "date-fns";
+import toast from "react-hot-toast";
+import { useAppDispatch } from "@/lib/utils";
+import { UPDATE_TASK } from "../services/tasks";
+import { updateTask } from "../redux/slices/taskSlice";
 
 interface CardProps {
   task: Task;
@@ -12,16 +16,33 @@ interface CardProps {
 
 const TaskCard: React.FC<CardProps> = ({ task }) => {
   const [checked, setChecked] = useState(false);
-  const [important, setImportant] = useState(false);
+
+  const dispatch = useAppDispatch();
 
   const markAsCompleted = (e: React.MouseEvent) => {
     e.stopPropagation();
     setChecked(!checked);
   };
 
-  const markAsImportant = (e: React.MouseEvent) => {
+  const markAsImportant = async (e: React.MouseEvent) => {
     e.stopPropagation();
-    setImportant(!important);
+    toast.loading("Please wait...");
+
+    try {
+      const res = await UPDATE_TASK({ ...task, important: !task.important });
+
+      if (res) {
+        toast.dismiss();
+        toast.success(
+          res.important
+            ? "You've marked this task as important."
+            : "You unmarked this task as important."
+        );
+        dispatch(updateTask(res));
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -85,7 +106,7 @@ const TaskCard: React.FC<CardProps> = ({ task }) => {
           <Button
             size="icon"
             variant="ghost"
-            onClick={markAsImportant}
+            onClick={(e) => void markAsImportant(e)}
             className="hover:text-primary"
           >
             <Star

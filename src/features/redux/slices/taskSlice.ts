@@ -29,6 +29,10 @@ export const taskSlice = createSlice({
     setTasks: (state, action: PayloadAction<Task[]>) => {
       state.tasks = action.payload;
     },
+    updateTask: (state, action: PayloadAction<Task>) => {
+      const task = action.payload;
+      state.tasks = state.tasks.map((t) => (t.id === task.id ? task : t));
+    },
     addTask: (state, action: PayloadAction<Task>) => {
       state.tasks.push(action.payload);
     },
@@ -50,6 +54,7 @@ export const {
   setImportantTasks,
   setCompletedTasks,
   setPlannedTasks,
+  updateTask,
 } = taskSlice.actions;
 export const selectTasks = (state: RootState) => state.tasks;
 

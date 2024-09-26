@@ -24,3 +24,9 @@ export const GET_PLANNED_TASKS = async (): Promise<Task[]> => {
   const res = await api.get<Task[]>("/tasks/planned/");
   return res.data;
 };
+
+// update task
+export const UPDATE_TASK = async (task: Task): Promise<Task> => {
+  const res = await api.put<Task>(`/tasks/${task.id}/`, task);
+  return res.data;
+};
