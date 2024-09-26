@@ -3,7 +3,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Task } from "@/types/tasks";
 import { Bell, Calendar, Dot, File, RefreshCw, Star } from "lucide-react";
-import { useState } from "react";
 import { format } from "date-fns";
 import toast from "react-hot-toast";
 import { useAppDispatch } from "@/lib/utils";
@@ -15,13 +14,27 @@ interface CardProps {
 }
 
 const TaskCard: React.FC<CardProps> = ({ task }) => {
-  const [checked, setChecked] = useState(false);
-
   const dispatch = useAppDispatch();
 
-  const markAsCompleted = (e: React.MouseEvent) => {
+  const markAsCompleted = async (e: React.MouseEvent) => {
     e.stopPropagation();
-    setChecked(!checked);
+    toast.loading("Please wait...");
+
+    try {
+      const res = await UPDATE_TASK({ ...task, completed: !task.completed });
+
+      if (res) {
+        toast.dismiss();
+        toast.success(
+          res.completed
+            ? "Task completed successfully."
+            : "You unmarked this task as completed."
+        );
+        dispatch(updateTask(res));
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const markAsImportant = async (e: React.MouseEvent) => {
@@ -54,7 +67,7 @@ const TaskCard: React.FC<CardProps> = ({ task }) => {
         <div className="flex items-center gap-x-3">
           <Checkbox
             className="rounded-full w-5 h-5"
-            onClick={markAsCompleted}
+            onClick={(e) => void markAsCompleted(e)}
             checked={task.completed}
           />
           <div>
