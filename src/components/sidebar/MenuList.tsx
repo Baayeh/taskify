@@ -61,7 +61,7 @@ const MenuList = () => {
           return 0;
       }
     },
-    [importantTasksCount]
+    [importantTasksCount, myDayTasksCount, plannedTasksCount]
   );
 
   return (
