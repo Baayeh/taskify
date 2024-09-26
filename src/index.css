@@ -83,6 +83,10 @@
   background-color: hsl(var(--primary));
 }
 
+.accordion[data-state="open"] button.trigger-btn {
+  border-color: hsl(var(--primary));
+}
+
 .accordion[data-state="open"] button.trigger-btn svg {
-  transform: rotate(180deg);
+  transform: rotate(90deg);
 }

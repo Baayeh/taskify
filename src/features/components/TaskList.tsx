@@ -8,9 +8,8 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { Button } from "@/components/ui/button";
 import { useCallback } from "react";
-import { ChevronDownIcon } from "@radix-ui/react-icons";
+import { ChevronRightIcon } from "@radix-ui/react-icons";
 
 interface Props {
   tasks: Task[];
@@ -49,13 +48,11 @@ const TasksList: React.FC<Props> = ({ tasks }) => {
 
       {completedTasks ? (
         <Accordion type="single" collapsible defaultValue="completed">
-          <AccordionItem value="completed" className="accordion">
-            <AccordionTrigger className="hover:no-underline">
-              <Button variant="outline" className="trigger-btn gap-x-4">
-                <ChevronDownIcon className="h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200 data-[state=open]:rotate-180" />
-                <span>Completed</span>
-                <span>{completedTasks.length}</span>
-              </Button>
+          <AccordionItem value="completed" className="accordion border-b-0">
+            <AccordionTrigger className="trigger-btn mb-2 border px-3 py-2 w-fit inline-flex flex-none justify-start gap-x-5 rounded-md hover:no-underline hover:border-primary">
+              <ChevronRightIcon className="h-4 w-4 shrink-0 transition-transform duration-200" />
+              <span>Completed</span>
+              <span>{completedTasks.length}</span>
             </AccordionTrigger>
             <AccordionContent>
               {completedTasks.map((task) => (
