@@ -4,7 +4,6 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Task } from "@/types/tasks";
 import { Bell, Calendar, Dot, File, RefreshCw, Star } from "lucide-react";
 import { format } from "date-fns";
-import toast from "react-hot-toast";
 import { useAppDispatch } from "@/lib/utils";
 import { UPDATE_TASK } from "../services/tasks";
 import { updateTask } from "../redux/slices/taskSlice";
@@ -18,20 +17,11 @@ const TaskCard: React.FC<CardProps> = ({ task }) => {
 
   const markAsCompleted = async (e: React.MouseEvent) => {
     e.stopPropagation();
-    toast.loading("Please wait...");
 
     try {
       const res = await UPDATE_TASK({ ...task, completed: !task.completed });
 
-      if (res) {
-        toast.dismiss();
-        toast.success(
-          res.completed
-            ? "Task completed successfully."
-            : "You unmarked this task as completed."
-        );
-        dispatch(updateTask(res));
-      }
+      if (res) dispatch(updateTask(res));
     } catch (error) {
       console.log(error);
     }
@@ -39,20 +29,11 @@ const TaskCard: React.FC<CardProps> = ({ task }) => {
 
   const markAsImportant = async (e: React.MouseEvent) => {
     e.stopPropagation();
-    toast.loading("Please wait...");
 
     try {
       const res = await UPDATE_TASK({ ...task, important: !task.important });
 
-      if (res) {
-        toast.dismiss();
-        toast.success(
-          res.important
-            ? "You've marked this task as important."
-            : "You unmarked this task as important."
-        );
-        dispatch(updateTask(res));
-      }
+      if (res) dispatch(updateTask(res));
     } catch (error) {
       console.log(error);
     }
