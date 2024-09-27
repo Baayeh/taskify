@@ -11,3 +11,14 @@ export interface Task {
   created: string;
   date_completed: Date | null;
 }
+
+export interface AddTask {
+  title: string;
+  note?: string;
+  completed?: boolean;
+  my_day?: boolean;
+  important?: boolean;
+  reminder?: Date | null;
+  due_date?: Date | null;
+  repeat?: string;
+}
