@@ -1,4 +1,4 @@
-import { Task } from "@/types/tasks";
+import { AddTask, Task } from "@/types/tasks";
 import api from "./api";
 
 // fetch all tasks
@@ -22,6 +22,12 @@ export const GET_IMPORTANT_TASKS = async (): Promise<Task[]> => {
 // fetch planned tasks
 export const GET_PLANNED_TASKS = async (): Promise<Task[]> => {
   const res = await api.get<Task[]>("/tasks/planned/");
+  return res.data;
+};
+
+// add task
+export const ADD_TASK = async (task: AddTask): Promise<Task> => {
+  const res = await api.post<Task>("/tasks/", task);
   return res.data;
 };
 

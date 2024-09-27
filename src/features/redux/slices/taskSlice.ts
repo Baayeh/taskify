@@ -34,7 +34,7 @@ export const taskSlice = createSlice({
       state.tasks = state.tasks.map((t) => (t.id === task.id ? task : t));
     },
     addTask: (state, action: PayloadAction<Task>) => {
-      state.tasks.push(action.payload);
+      state.tasks.unshift(action.payload);
     },
     setImportantTasks: (state, action: PayloadAction<Task[]>) => {
       state.importantTasks = action.payload;
