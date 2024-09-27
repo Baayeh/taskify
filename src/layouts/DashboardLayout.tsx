@@ -14,7 +14,7 @@ const DashboardLayout = () => {
   const ref = useRef<HTMLDivElement>(null);
 
   const [open, setOpen] = useState(false);
-  const [task, setTask] = useState("");
+  const [taskTitle, setTaskTitle] = useState("");
 
   const handleClickOutside = (event: MouseEvent) => {
     if (ref.current && !ref.current.contains(event.target as Node)) {
@@ -24,7 +24,7 @@ const DashboardLayout = () => {
   };
 
   useEffect(() => {
-    if (open && !task) {
+    if (open && !taskTitle) {
       document.addEventListener("mousedown", handleClickOutside);
     } else {
       document.removeEventListener("mousedown", handleClickOutside);
@@ -32,7 +32,7 @@ const DashboardLayout = () => {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [open, task]);
+  }, [open, taskTitle]);
 
   return (
     <LoaderProvider>
@@ -49,8 +49,8 @@ const DashboardLayout = () => {
             divRef={ref}
             open={open}
             setOpen={setOpen}
-            task={task}
-            setTask={setTask}
+            title={taskTitle}
+            setTitle={setTaskTitle}
           />
         </div>
 
