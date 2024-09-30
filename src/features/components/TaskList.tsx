@@ -47,27 +47,33 @@ const TasksList: React.FC<Props> = ({ tasks }) => {
   const completedTasks = getCompletedTask();
 
   return (
-    <ScrollArea className="relative w-full h-[calc(100vh-15rem)] md:h-[calc(100vh-12rem)]">
-      {uncompletedTasks.map((task) => (
-        <TaskCard key={task.id} task={task} />
-      ))}
+    <ScrollArea className="relative w-full h-[calc(100vh-15rem)] md:h-[calc(100vh-12rem)] pr-5">
+      <div className="flex flex-col gap-y-2">
+        {uncompletedTasks.map((task) => (
+          <TaskCard key={task.id} task={task} />
+        ))}
+      </div>
 
-      {completedTasks.length ? (
-        <Accordion type="single" collapsible defaultValue="completed">
-          <AccordionItem value="completed" className="accordion border-b-0">
-            <AccordionTrigger className="trigger-btn mb-2 border px-3 py-2 w-fit inline-flex flex-none justify-start gap-x-5 rounded-md hover:no-underline hover:border-primary">
-              <ChevronRightIcon className="h-4 w-4 shrink-0 transition-transform duration-200" />
-              <span>Completed</span>
-              <span>{completedTasks.length}</span>
-            </AccordionTrigger>
-            <AccordionContent>
-              {completedTasks.map((task) => (
-                <TaskCard key={task.id} task={task} />
-              ))}
-            </AccordionContent>
-          </AccordionItem>
-        </Accordion>
-      ) : null}
+      <div className="mt-3">
+        {completedTasks.length ? (
+          <Accordion type="single" collapsible defaultValue="completed">
+            <AccordionItem value="completed" className="accordion border-b-0">
+              <AccordionTrigger className="trigger-btn mb-2 border px-3 py-2 w-fit inline-flex flex-none justify-start gap-x-5 rounded-md hover:no-underline hover:border-primary">
+                <ChevronRightIcon className="h-4 w-4 shrink-0 transition-transform duration-200" />
+                <span>Completed</span>
+                <span>{completedTasks.length}</span>
+              </AccordionTrigger>
+              <AccordionContent>
+                <div className="flex flex-col gap-y-2">
+                  {completedTasks.map((task) => (
+                    <TaskCard key={task.id} task={task} />
+                  ))}
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        ) : null}
+      </div>
     </ScrollArea>
   );
 };
