@@ -10,9 +10,14 @@ import { parseTimeAndSet } from "@/lib/utils";
 interface DatePickerProps {
   setDate: React.Dispatch<React.SetStateAction<Date | undefined>>;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  addTime?: boolean;
 }
 
-const DatePicker: React.FC<DatePickerProps> = ({ setDate, setOpen }) => {
+const DatePicker: React.FC<DatePickerProps> = ({
+  setDate,
+  setOpen,
+  addTime,
+}) => {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>();
   const [hours, setHours] = useState("00");
   const [minutes, setMinutes] = useState("00");
@@ -52,7 +57,7 @@ const DatePicker: React.FC<DatePickerProps> = ({ setDate, setOpen }) => {
           className="gap-x-5 px-3 py-5 w-full justify-start"
         >
           <CalendarClock size={16} className="text-gray-500" />
-          <span>Pick a date</span>
+          <span>{addTime ? "Pick a date & time" : "Pick a date"}</span>
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0">
@@ -61,14 +66,16 @@ const DatePicker: React.FC<DatePickerProps> = ({ setDate, setOpen }) => {
           selected={selectedDate}
           onSelect={setSelectedDate}
         />
-        <TimePicker
-          hours={hours}
-          minutes={minutes}
-          period={period}
-          setHours={setHours}
-          setMinutes={setMinutes}
-          setPeriod={setPeriod}
-        />
+        {addTime && (
+          <TimePicker
+            hours={hours}
+            minutes={minutes}
+            period={period}
+            setHours={setHours}
+            setMinutes={setMinutes}
+            setPeriod={setPeriod}
+          />
+        )}
         <div className="flex justify-between gap-x-3 p-3">
           <Button
             className="w-full"
