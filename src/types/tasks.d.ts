@@ -10,6 +10,7 @@ export interface Task {
   repeat: string;
   created: string;
   date_completed: Date | null;
+  updated: string;
 }
 
 export interface AddTask {

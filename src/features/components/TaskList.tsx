@@ -19,7 +19,13 @@ const TasksList: React.FC<Props> = ({ tasks }) => {
   const { pathname } = useLocation();
 
   // uncompleted tasks
-  const uncompletedTasks = tasks?.filter((task: Task) => !task.completed);
+  const uncompletedTasks = tasks
+    ?.filter((task: Task) => !task.completed)
+    .sort((a, b) => {
+      const dateA = new Date(a.updated);
+      const dateB = new Date(b.updated);
+      return dateB.getTime() - dateA.getTime(); // Sorting by most recent);
+    });
 
   // get completed tasks based on the pathname
   const getCompletedTask = useCallback(() => {
