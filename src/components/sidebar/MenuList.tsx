@@ -1,6 +1,14 @@
 import { Home, SquareKanban, Star, Sun, UserRound } from "lucide-react";
-import React from "react";
+import React, { useCallback } from "react";
 import { NavLink } from "react-router-dom";
+import { Badge } from "../ui/badge";
+import { useAppSelector } from "@/lib/utils";
+import {
+  selectImportantTasksCount,
+  selectMyDayTasksCount,
+  selectPlannedTasksCount,
+  selectUncompletedTasks,
+} from "@/features/redux/slices/taskSlice";
 
 interface LinkProp {
   name: string;
@@ -37,16 +45,51 @@ const links: LinkProp[] = [
 ];
 
 const MenuList = () => {
+  const unCompletedTasksCount = useAppSelector(selectUncompletedTasks);
+  const importantTasksCount = useAppSelector(selectImportantTasksCount);
+  const plannedTasksCount = useAppSelector(selectPlannedTasksCount);
+  const myDayTasksCount = useAppSelector(selectMyDayTasksCount);
+
+  const getCount = useCallback(
+    (name: string) => {
+      switch (name) {
+        case "My Day":
+          return myDayTasksCount;
+        case "Important":
+          return importantTasksCount;
+        case "Planned":
+          return plannedTasksCount;
+        case "Tasks":
+          return unCompletedTasksCount;
+        default:
+          return 0;
+      }
+    },
+    [
+      importantTasksCount,
+      myDayTasksCount,
+      plannedTasksCount,
+      unCompletedTasksCount,
+    ]
+  );
+
   return (
     <ul className="my-5 border-b">
       {links.map((link) => (
         <li key={link.name} className="mb-2">
           <NavLink
             to={link.route}
-            className="menu-item flex items-center gap-x-4 whitespace-nowrap rounded-md px-3 py-3 text-sm hover:bg-muted transition-colors"
+            className="menu-item flex items-center justify-between whitespace-nowrap rounded-md px-3 py-3 text-sm hover:bg-muted transition-colors"
           >
-            {link.icon}
-            <span>{link.name}</span>
+            <div className="flex items-center gap-x-4">
+              {link.icon}
+              <span>{link.name}</span>
+            </div>
+            {getCount(link.name) > 0 && (
+              <Badge variant="outline" className="rounded-full">
+                {getCount(link.name)}
+              </Badge>
+            )}
           </NavLink>
         </li>
       ))}
