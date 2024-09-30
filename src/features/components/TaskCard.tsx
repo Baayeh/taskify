@@ -41,10 +41,10 @@ const TaskCard: React.FC<CardProps> = ({ task }) => {
 
   return (
     <Card
-      className="bg-muted/50 mb-3 rounded-md hover:cursor-pointer hover:bg-muted transition-colors duration-300 ease-in-out"
+      className="bg-muted/50 rounded-md hover:cursor-pointer hover:bg-muted transition-colors duration-300 ease-in-out"
       onClick={() => console.log("Card clicked")}
     >
-      <CardContent className="px-5 py-3 flex justify-between">
+      <CardContent className="h-[4rem] px-5 py-0 flex justify-between items-center">
         <div className="flex items-center gap-x-3">
           <Checkbox
             className="rounded-full w-5 h-5"
