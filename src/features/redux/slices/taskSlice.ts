@@ -58,6 +58,11 @@ export const {
 } = taskSlice.actions;
 export const selectTasks = (state: RootState) => state.tasks;
 
+export const selectUncompletedTasks = createSelector(
+  (state: RootState) => state.tasks.tasks,
+  (tasks) => tasks.filter((task) => !task.completed).length
+);
+
 export const selectImportantTasksCount = createSelector(
   (state: RootState) => state.tasks.tasks,
   (tasks) => tasks.filter((task) => task.important).length

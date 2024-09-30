@@ -7,6 +7,7 @@ import {
   selectImportantTasksCount,
   selectMyDayTasksCount,
   selectPlannedTasksCount,
+  selectUncompletedTasks,
 } from "@/features/redux/slices/taskSlice";
 
 interface LinkProp {
@@ -44,6 +45,7 @@ const links: LinkProp[] = [
 ];
 
 const MenuList = () => {
+  const unCompletedTasksCount = useAppSelector(selectUncompletedTasks);
   const importantTasksCount = useAppSelector(selectImportantTasksCount);
   const plannedTasksCount = useAppSelector(selectPlannedTasksCount);
   const myDayTasksCount = useAppSelector(selectMyDayTasksCount);
@@ -57,11 +59,18 @@ const MenuList = () => {
           return importantTasksCount;
         case "Planned":
           return plannedTasksCount;
+        case "Tasks":
+          return unCompletedTasksCount;
         default:
           return 0;
       }
     },
-    [importantTasksCount, myDayTasksCount, plannedTasksCount]
+    [
+      importantTasksCount,
+      myDayTasksCount,
+      plannedTasksCount,
+      unCompletedTasksCount,
+    ]
   );
 
   return (
