@@ -38,3 +38,17 @@ export const parseTimeAndSet = (
   // Set time to the parsed date
   return set(baseDate, { hours: finalHours, minutes });
 };
+
+// function to display date
+export const displayDate = (date: Date, today: Date, tomorrow: Date) => {
+  if (!date) return null;
+
+  switch (formatDate(date)) {
+    case formatDate(today):
+      return "Today";
+    case formatDate(tomorrow):
+      return "Tomorrow";
+    default:
+      return format(date, "EEE, dd MMM");
+  }
+};
