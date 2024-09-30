@@ -49,6 +49,7 @@ export const taskSlice = createSlice({
 });
 
 export const {
+  setTask,
   setTasks,
   addTask,
   setImportantTasks,
