@@ -47,7 +47,7 @@ const TasksList: React.FC<Props> = ({ tasks }) => {
       ))}
 
       {completedTasks.length ? (
-        <Accordion type="single" collapsible>
+        <Accordion type="single" collapsible defaultValue="completed">
           <AccordionItem value="completed" className="accordion border-b-0">
             <AccordionTrigger className="trigger-btn mb-2 border px-3 py-2 w-fit inline-flex flex-none justify-start gap-x-5 rounded-md hover:no-underline hover:border-primary">
               <ChevronRightIcon className="h-4 w-4 shrink-0 transition-transform duration-200" />
