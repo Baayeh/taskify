@@ -100,7 +100,7 @@ const CreateTask: React.FC<CreateTaskProps> = ({
   }, [title, parseTimeAndSet]);
 
   return (
-    <div ref={divRef} className="mt-5">
+    <div ref={divRef} className="mt-5 md:mt-7 pr-5 md:pr-14">
       {open ? (
         <Label htmlFor="create-task" className="relative">
           <Circle className="absolute top-1/2 -translate-y-1/2 left-4 text-primary" />

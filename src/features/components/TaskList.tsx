@@ -47,7 +47,7 @@ const TasksList: React.FC<Props> = ({ tasks }) => {
   const completedTasks = getCompletedTask();
 
   return (
-    <ScrollArea className="relative w-full h-[calc(100vh-15rem)] md:h-[calc(100vh-12rem)] pr-5">
+    <ScrollArea className="relative w-full h-[calc(100vh-13rem)] md:h-[calc(100vh-12rem)] pr-5 md:pr-14">
       <div className="flex flex-col gap-y-2">
         {uncompletedTasks.map((task) => (
           <TaskCard key={task.id} task={task} />
@@ -63,7 +63,7 @@ const TasksList: React.FC<Props> = ({ tasks }) => {
                 <span>Completed</span>
                 <span>{completedTasks.length}</span>
               </AccordionTrigger>
-              <AccordionContent>
+              <AccordionContent className="pb-0">
                 <div className="flex flex-col gap-y-2">
                   {completedTasks.map((task) => (
                     <TaskCard key={task.id} task={task} />
