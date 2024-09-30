@@ -2,10 +2,12 @@ import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Circle, Plus } from "lucide-react";
 import AddDueDate from "./AddDueDate";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ADD_TASK } from "@/features/services/tasks";
-import { useAppDispatch } from "@/lib/utils";
+import { parseTimeAndSet, useAppDispatch } from "@/lib/utils";
 import { addTask } from "@/features/redux/slices/taskSlice";
+import AddReminder from "./AddReminder";
+import { addDays, Day, nextDay, parse } from "date-fns";
 
 interface CreateTaskProps {
   divRef: React.RefObject<HTMLDivElement>;
@@ -15,6 +17,13 @@ interface CreateTaskProps {
   setTitle: React.Dispatch<React.SetStateAction<string>>;
 }
 
+// Regex pattern for detecting the day of the week
+const dayOfWeekRegex =
+  /(monday|tuesday|wednesday|thursday|friday|saturday|sunday)/i;
+
+// Regex pattern for detecting the time
+export const timeRegex = /(\d{1,2})(?::(\d{2}))?\s?(am|pm)?/i;
+
 const CreateTask: React.FC<CreateTaskProps> = ({
   divRef,
   open,
@@ -22,7 +31,8 @@ const CreateTask: React.FC<CreateTaskProps> = ({
   title,
   setTitle,
 }) => {
-  const [dueDate, setDueDate] = useState<Date | null>(null);
+  const [dueDate, setDueDate] = useState<Date | undefined>();
+  const [reminder, setReminder] = useState<Date | undefined>();
   const dispatch = useAppDispatch();
 
   const createTask = async () => {
@@ -30,6 +40,8 @@ const CreateTask: React.FC<CreateTaskProps> = ({
 
     const task = {
       title,
+      due_date: dueDate ?? null,
+      reminder: reminder ?? null,
     };
 
     try {
@@ -38,6 +50,8 @@ const CreateTask: React.FC<CreateTaskProps> = ({
       if (res) {
         dispatch(addTask(res));
         setTitle("");
+        setDueDate(undefined);
+        setReminder(undefined);
 
         setOpen(false);
       }
@@ -51,6 +65,39 @@ const CreateTask: React.FC<CreateTaskProps> = ({
       void createTask();
     }
   };
+
+  const lowercaseTitle = title.toLowerCase();
+  const dayMatch = dayOfWeekRegex.exec(lowercaseTitle);
+  const timeMatch = timeRegex.exec(lowercaseTitle);
+
+  useEffect(() => {
+    if (!title) return;
+
+    const now = new Date();
+
+    if (dayMatch) {
+      const day = dayMatch[0];
+      const dayIndex = parse(day, "EEEE", new Date()).getDay();
+      const nextDayDate = nextDay(now, dayIndex as Day);
+
+      const dueDateWithTime = parseTimeAndSet(nextDayDate, timeMatch); // Add time if available
+      setReminder(timeMatch ? dueDateWithTime : undefined); // Set reminder if time is provided
+      setDueDate(timeMatch ? undefined : nextDayDate); // Set due date if no time is provided
+    }
+
+    if (lowercaseTitle.includes("today")) {
+      const todayWithTime = parseTimeAndSet(now, timeMatch); // Add time if available
+      setReminder(timeMatch ? todayWithTime : undefined); // Set reminder if time is provided
+      setDueDate(timeMatch ? undefined : now); // Set due date if no time is provided
+    }
+
+    if (lowercaseTitle.includes("tomorrow")) {
+      const tomorrow = addDays(now, 1);
+      const tomorrowWithTime = parseTimeAndSet(tomorrow, timeMatch); // Add time if available
+      setReminder(timeMatch ? tomorrowWithTime : undefined); // Set reminder if time is provided
+      setDueDate(timeMatch ? undefined : tomorrow); // Set due date if no time is provided
+    }
+  }, [title, parseTimeAndSet]);
 
   return (
     <div ref={divRef} className="mt-5">
@@ -67,8 +114,9 @@ const CreateTask: React.FC<CreateTaskProps> = ({
             className="h-14 bg-muted pl-12 placeholder:text-primary focus-visible:ring-0"
           />
           {title && (
-            <div className="absolute right-2 top-1/2 -translate-y-1/2">
+            <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-x-1">
               <AddDueDate dueDate={dueDate} setDueDate={setDueDate} />
+              <AddReminder reminder={reminder} setReminder={setReminder} />
             </div>
           )}
         </Label>
