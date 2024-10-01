@@ -7,6 +7,7 @@ import { format } from "date-fns";
 import { useAppDispatch } from "@/lib/utils";
 import { UPDATE_TASK } from "../services/tasks";
 import { setTask, updateTask } from "../redux/slices/taskSlice";
+import { useScreenSize } from "@/hooks/useScreenSize";
 
 interface CardProps {
   task: Task;
@@ -15,6 +16,7 @@ interface CardProps {
 
 const TaskCard: React.FC<CardProps> = ({ task, details }) => {
   const dispatch = useAppDispatch();
+  const { setShowDetails } = useScreenSize();
 
   const markAsCompleted = async (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -48,6 +50,7 @@ const TaskCard: React.FC<CardProps> = ({ task, details }) => {
 
   const selectTask = () => {
     dispatch(setTask(task));
+    setShowDetails(true);
   };
 
   return (
