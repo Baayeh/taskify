@@ -9,7 +9,10 @@ const useDateInfo = () => {
   const nextMondayDate = useMemo(() => nextMonday(today), [today]);
 
   // Time calculations
-  const laterToday = useMemo(() => add(today, { hours: 3 }), [today]);
+  const laterToday = useMemo(
+    () => setMinutes(add(today, { hours: 4 }), 0),
+    [today]
+  );
   const tomorrowAt9 = useMemo(
     () => set(tomorrow, { hours: 9, minutes: 0, seconds: 0 }),
     [tomorrow]
@@ -21,7 +24,7 @@ const useDateInfo = () => {
 
   // Abbreviated formats
   const lateTodayAbbrev = useMemo(
-    () => format(setMinutes(laterToday, 0), "hh:mm a"),
+    () => format(laterToday, "hh:mm a"),
     [laterToday]
   );
   const tomorrowAt9Abbrev = useMemo(
