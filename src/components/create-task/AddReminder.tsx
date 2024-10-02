@@ -4,7 +4,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "../ui/tooltip";
-
 import { useState } from "react";
 import SelectDate from "./SelectDate";
 
@@ -22,11 +21,11 @@ const AddReminder: React.FC<AddReminderProps> = ({ reminder, setReminder }) => {
         <Tooltip>
           <TooltipTrigger>
             <SelectDate
-              isReminder
               date={reminder}
               setDate={setReminder}
               open={open}
               setOpen={setOpen}
+              isReminder
             />
           </TooltipTrigger>
           <TooltipContent className="bg-muted shadow-md shadow-black/50">
