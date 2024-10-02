@@ -60,29 +60,31 @@ const SelectDate: React.FC<ReminderDropDownProps> = ({
 
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
-      <DropdownMenuTrigger
-        className={`w-full font-normal flex gap-x-2 items-center rounded-md p-2 text-sm hover:bg-black/30 focus-visible:outline-none focus-visible:ring-0 transition-colors duration-300 ${isDetails ? "rounded h-14 bg-muted/50 hover:bg-muted gap-x-4 pl-5 pr-3" : ""} ${isDetails && date ? "rounded-s rounded-e-none" : ""}`}
-      >
-        {isReminder ? <GrAlarm size={20} /> : <CalendarDays size={20} />}
-        {isReminder && date && (
-          <div className="flex flex-col items-start">
-            <p className={`${isDetails ? "text-base text-primary" : ""}`}>
-              Remind me at {format(date, "h:mm aaa")}
-            </p>
-            <p className="text-xs">{displayDate(date, today, tomorrowAt9)}</p>
-          </div>
-        )}
-        {isDetails && (
-          <>
-            {isReminder && !date && (
-              <p className="text-base font-normal">Remind me</p>
-            )}
-            {!isReminder && !date && (
-              <p className="text-base font-normal">Add due date</p>
-            )}
-          </>
-        )}
-        {!isReminder && date && <p>{displayDate(date, today, tomorrow)}</p>}
+      <DropdownMenuTrigger asChild>
+        <div
+          className={`w-full font-normal flex gap-x-2 items-center rounded-md p-2 text-sm hover:bg-black/30 focus-visible:outline-none focus-visible:ring-0 transition-colors duration-300 ${isDetails ? "rounded h-14 bg-muted/50 hover:bg-muted gap-x-4 pl-5 pr-3" : ""} ${isDetails && date ? "rounded-s rounded-e-none" : ""}`}
+        >
+          {isReminder ? <GrAlarm size={20} /> : <CalendarDays size={20} />}
+          {isReminder && date && (
+            <div className="flex flex-col items-start">
+              <p className={`${isDetails ? "text-base text-primary" : ""}`}>
+                Remind me at {format(date, "h:mm aaa")}
+              </p>
+              <p className="text-xs">{displayDate(date, today, tomorrowAt9)}</p>
+            </div>
+          )}
+          {isDetails && (
+            <>
+              {isReminder && !date && (
+                <p className="text-base font-normal">Remind me</p>
+              )}
+              {!isReminder && !date && (
+                <p className="text-base font-normal">Add due date</p>
+              )}
+            </>
+          )}
+          {!isReminder && date && <p>{displayDate(date, today, tomorrow)}</p>}
+        </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-[16rem] border border-muted">
         <DropdownMenuItem
