@@ -3,18 +3,18 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Task } from "@/types/tasks";
 import { Bell, Calendar, Dot, File, RefreshCw, Star } from "lucide-react";
-import { format } from "date-fns";
-import { useAppDispatch } from "@/lib/utils";
+import { displayDate, useAppDispatch } from "@/lib/utils";
 import { UPDATE_TASK } from "../services/tasks";
 import { setTask, updateTask } from "../redux/slices/taskSlice";
 import { useScreenSize } from "@/hooks/useScreenSize";
+import { isPast } from "date-fns";
 
 interface CardProps {
   task: Task;
-  details?: boolean;
+  showDetails?: boolean;
 }
 
-const TaskCard: React.FC<CardProps> = ({ task, details }) => {
+const TaskCard: React.FC<CardProps> = ({ task, showDetails }) => {
   const dispatch = useAppDispatch();
   const { setShowDetails } = useScreenSize();
 
@@ -26,7 +26,7 @@ const TaskCard: React.FC<CardProps> = ({ task, details }) => {
 
       if (res) {
         dispatch(updateTask(res));
-        if (details) dispatch(setTask(res));
+        if (showDetails) dispatch(setTask(res));
       }
     } catch (error) {
       console.log(error);
@@ -41,7 +41,7 @@ const TaskCard: React.FC<CardProps> = ({ task, details }) => {
 
       if (res) {
         dispatch(updateTask(res));
-        if (details) dispatch(setTask(res));
+        if (showDetails) dispatch(setTask(res));
       }
     } catch (error) {
       console.log(error);
@@ -55,11 +55,11 @@ const TaskCard: React.FC<CardProps> = ({ task, details }) => {
 
   return (
     <Card
-      className={`${details ? "rounded bg-muted/50 border-0" : "bg-muted/50 rounded-md hover:cursor-pointer hover:bg-muted transition-colors duration-300 ease-in-out"}`}
-      onClick={() => !details && selectTask()}
+      className={`${showDetails ? "rounded bg-muted/50 border-0" : "bg-muted/50 rounded-md hover:cursor-pointer hover:bg-muted transition-colors duration-300 ease-in-out"}`}
+      onClick={() => !showDetails && selectTask()}
     >
       <CardContent
-        className={`pl-5 pr-3 py-0 flex justify-between items-center ${details ? "min-h-[4rem] max-h-[5rem]" : "h-[4rem]"}`}
+        className={`pl-5 pr-3 py-0 flex justify-between items-center ${showDetails ? "min-h-[4rem] max-h-[5rem]" : "h-[4rem]"}`}
       >
         <div className="flex items-center gap-x-3">
           <Checkbox
@@ -74,35 +74,40 @@ const TaskCard: React.FC<CardProps> = ({ task, details }) => {
               {task.title}
             </h3>
 
-            {!details && (
+            {!showDetails && (
               <div className="mt-1 text-xs text-muted-foreground flex items-center gap-x-3 sm:gap-x-1">
                 <div className="flex items-center gap-x-2">
                   {task.due_date && (
-                    <p className="flex items-center gap-x-1">
+                    <p
+                      className={`flex items-center gap-x-1 ${isPast(task.due_date) ? "text-red-500" : ""}`}
+                    >
                       <Calendar size={12} />
-                      <span>{format(task.due_date, "EEE, dd MMM")}</span>
+                      <span>{displayDate(task.due_date)}</span>
                     </p>
                   )}
 
                   {task.repeat && <RefreshCw size={12} />}
                 </div>
                 {(task.due_date || task.repeat) &&
-                (task.reminder || task.note) ? (
+                ((task.reminder && !isPast(task.reminder)) || task.note) ? (
                   <Dot className="hidden sm:block" />
                 ) : null}
 
-                {task.reminder && (
+                {task.reminder && !isPast(task.reminder) && (
                   <>
                     <p className="flex items-center gap-x-1">
                       <Bell size={12} />
                       <span className="hidden sm:block">
-                        {format(task.reminder, "EEE, dd MMM")}
+                        {displayDate(task.reminder)}
                       </span>
                     </p>
-
-                    <Dot className="hidden sm:block" />
                   </>
                 )}
+
+                {(task.due_date || task.repeat) &&
+                ((task.reminder && !isPast(task.reminder)) || task.note) ? (
+                  <Dot className="hidden sm:block" />
+                ) : null}
 
                 {task.note && (
                   <div className="flex items-center gap-x-1">
