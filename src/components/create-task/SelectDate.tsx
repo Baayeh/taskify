@@ -7,7 +7,7 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { GrAlarm } from "react-icons/gr";
-import { format } from "date-fns";
+import { format, isPast } from "date-fns";
 import { displayDate } from "@/lib/utils";
 import {
   PiCaretCircleDoubleRight,
@@ -67,7 +67,9 @@ const SelectDate: React.FC<ReminderDropDownProps> = ({
           {isReminder ? <GrAlarm size={20} /> : <CalendarDays size={20} />}
           {isReminder && date && (
             <div className="flex flex-col items-start">
-              <p className={`${isDetails ? "text-base text-primary" : ""}`}>
+              <p
+                className={`${isDetails && !isPast(date) ? "text-base text-primary" : ""}`}
+              >
                 Remind me at {format(date, "h:mm aaa")}
               </p>
               <p className="text-xs">{displayDate(date, today, tomorrowAt9)}</p>
