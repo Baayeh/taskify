@@ -3,20 +3,26 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Task } from "@/types/tasks";
 import { Bell, Calendar, Dot, File, RefreshCw, Star } from "lucide-react";
-import { displayDate, useAppDispatch } from "@/lib/utils";
+import { displayDate, useAppDispatch, useAppSelector } from "@/lib/utils";
 import { UPDATE_TASK } from "../services/tasks";
-import { setTask, updateTask } from "../redux/slices/taskSlice";
+import { selectTasks, setTask, updateTask } from "../redux/slices/taskSlice";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { isPast } from "date-fns";
 
 interface CardProps {
   task: Task;
   showDetails?: boolean;
+  isFromTaskList?: boolean;
 }
 
-const TaskCard: React.FC<CardProps> = ({ task, showDetails }) => {
+const TaskCard: React.FC<CardProps> = ({
+  task,
+  showDetails,
+  isFromTaskList,
+}) => {
   const dispatch = useAppDispatch();
   const { setShowDetails } = useScreenSize();
+  const { task: selectedTask } = useAppSelector(selectTasks);
 
   const markAsCompleted = async (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -55,7 +61,7 @@ const TaskCard: React.FC<CardProps> = ({ task, showDetails }) => {
 
   return (
     <Card
-      className={`${showDetails ? "rounded bg-muted/50 border-0" : "bg-muted/50 rounded-md hover:cursor-pointer hover:bg-muted transition-colors duration-300 ease-in-out"}`}
+      className={`${showDetails ? "rounded bg-muted/50 border-0" : "bg-muted/50 rounded-md hover:cursor-pointer hover:bg-muted transition-colors duration-300 ease-in-out"} ${isFromTaskList && selectedTask?.id === task.id ? "bg-muted" : ""}`}
       onClick={() => !showDetails && selectTask()}
     >
       <CardContent

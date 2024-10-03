@@ -8,7 +8,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { useCallback } from "react";
+import { useMemo } from "react";
 import { ChevronRightIcon } from "@radix-ui/react-icons";
 
 interface Props {
@@ -19,16 +19,13 @@ const TasksList: React.FC<Props> = ({ tasks }) => {
   const { pathname } = useLocation();
 
   // uncompleted tasks
-  const uncompletedTasks = tasks
-    ?.filter((task: Task) => !task.completed)
-    .sort((a, b) => {
-      const dateA = new Date(a.updated);
-      const dateB = new Date(b.updated);
-      return dateB.getTime() - dateA.getTime(); // Sorting by most recent);
-    });
+  const uncompletedTasks = useMemo(
+    () => tasks?.filter((task: Task) => !task.completed),
+    [tasks]
+  );
 
-  // get completed tasks based on the pathname
-  const getCompletedTask = useCallback(() => {
+  // completed tasks based on the pathname
+  const completedTasks = useMemo(() => {
     switch (pathname) {
       case "/tasks/my_day":
         return tasks.filter((task) => task.my_day && task.completed);
@@ -44,18 +41,33 @@ const TasksList: React.FC<Props> = ({ tasks }) => {
     }
   }, [tasks, pathname]);
 
-  const completedTasks = getCompletedTask();
+  const sortArray = (a: Task, b: Task) => {
+    const dateA = new Date(a.updated);
+    const dateB = new Date(b.updated);
+    return dateB.getTime() - dateA.getTime(); // Sorting by most recent);
+  };
+
+  // get important tasks
+  const importantTasks = uncompletedTasks
+    ?.filter((task: Task) => task.important)
+    .sort(sortArray);
+
+  const unimportantTasks = uncompletedTasks?.filter(
+    (task: Task) => !task.important
+  );
+
+  const allTasks = [...importantTasks, ...unimportantTasks];
 
   return (
     <ScrollArea className="relative w-full h-[calc(100vh-13rem)] md:h-[calc(100vh-12rem)] pr-5 md:pr-14">
       <div className="flex flex-col gap-y-2">
-        {uncompletedTasks.map((task) => (
-          <TaskCard key={task.id} task={task} />
+        {allTasks.map((task) => (
+          <TaskCard key={task.id} task={task} isFromTaskList />
         ))}
       </div>
 
-      <div className="mt-3">
-        {completedTasks.length ? (
+      {completedTasks.length ? (
+        <div className="mt-3">
           <Accordion type="single" collapsible defaultValue="completed">
             <AccordionItem value="completed" className="accordion border-b-0">
               <AccordionTrigger className="trigger-btn mb-2 border px-3 py-2 w-fit inline-flex flex-none justify-start gap-x-5 rounded-md hover:no-underline hover:border-primary">
@@ -66,14 +78,14 @@ const TasksList: React.FC<Props> = ({ tasks }) => {
               <AccordionContent className="pb-0">
                 <div className="flex flex-col gap-y-2">
                   {completedTasks.map((task) => (
-                    <TaskCard key={task.id} task={task} />
+                    <TaskCard key={task.id} task={task} isFromTaskList />
                   ))}
                 </div>
               </AccordionContent>
             </AccordionItem>
           </Accordion>
-        ) : null}
-      </div>
+        </div>
+      ) : null}
     </ScrollArea>
   );
 };
