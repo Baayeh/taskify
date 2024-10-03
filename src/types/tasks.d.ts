@@ -8,9 +8,10 @@ export interface Task {
   reminder: Date | null;
   due_date: Date | null;
   repeat: string;
-  created: string;
+  created: Date | null;
   date_completed: Date | null;
   updated: string;
+  note_updated: Date | null;
 }
 
 export interface AddTask {
