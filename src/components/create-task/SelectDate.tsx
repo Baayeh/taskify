@@ -8,7 +8,7 @@ import {
 } from "../ui/dropdown-menu";
 import { GrAlarm } from "react-icons/gr";
 import { format, isPast } from "date-fns";
-import { displayDate } from "@/lib/utils";
+import { cn, displayDate } from "@/lib/utils";
 import {
   PiCaretCircleDoubleRight,
   PiCaretCircleRight,
@@ -30,6 +30,7 @@ interface ReminderDropDownProps {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   isReminder?: boolean;
+  isDueDate?: boolean;
   isDetails?: boolean;
 }
 
@@ -39,6 +40,7 @@ const SelectDate: React.FC<ReminderDropDownProps> = ({
   open,
   setOpen,
   isReminder,
+  isDueDate,
   isDetails,
 }) => {
   const {
@@ -62,9 +64,27 @@ const SelectDate: React.FC<ReminderDropDownProps> = ({
     <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger asChild>
         <div
-          className={`w-full font-normal flex gap-x-2 items-center rounded-md p-2 text-sm hover:bg-black/30 focus-visible:outline-none focus-visible:ring-0 transition-colors duration-300 ${isDetails ? "rounded h-14 bg-muted/50 hover:bg-muted gap-x-4 pl-5 pr-3" : ""} ${isDetails && date ? "rounded-s rounded-e-none" : ""}`}
+          className={`w-full font-normal flex gap-x-2 items-center rounded-md p-2 text-sm hover:bg-black/30 focus-visible:outline-none focus-visible:ring-0 transition-colors duration-300 ${isDetails ? "rounded-none h-14 bg-muted/10 hover:bg-muted gap-x-4 pl-5 pr-3 cursor-pointer" : ""} ${isDetails && date ? "rounded-none" : ""}`}
         >
-          {isReminder ? <GrAlarm size={20} /> : <CalendarDays size={20} />}
+          {isReminder ? (
+            <GrAlarm
+              size={20}
+              className={cn(
+                "text-base",
+                isDetails && date && !isPast(date) ? "text-primary" : ""
+              )}
+            />
+          ) : (
+            <CalendarDays
+              size={20}
+              className={cn(
+                "text-base",
+                isDetails &&
+                  date &&
+                  (isPast(date) ? "text-red-500" : "text-primary")
+              )}
+            />
+          )}
           {isReminder && date && (
             <div className="flex flex-col items-start">
               <p
@@ -75,17 +95,26 @@ const SelectDate: React.FC<ReminderDropDownProps> = ({
               <p className="text-xs">{displayDate(date, today, tomorrowAt9)}</p>
             </div>
           )}
+          {isDueDate && date && (
+            <p
+              className={`text-base ${isDetails && isPast(date) ? "text-red-500" : "text-primary"}`}
+            >
+              Due {displayDate(date, today, tomorrow)}
+            </p>
+          )}
           {isDetails && (
             <>
               {isReminder && !date && (
                 <p className="text-base font-normal">Remind me</p>
               )}
-              {!isReminder && !date && (
+              {isDueDate && !date && (
                 <p className="text-base font-normal">Add due date</p>
               )}
             </>
           )}
-          {!isReminder && date && <p>{displayDate(date, today, tomorrow)}</p>}
+          {!isReminder && !isDueDate && date && (
+            <p>{displayDate(date, today, tomorrow)}</p>
+          )}
         </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-[16rem] border border-muted">
