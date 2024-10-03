@@ -36,3 +36,9 @@ export const UPDATE_TASK = async (task: Task): Promise<Task> => {
   const res = await api.put<Task>(`/tasks/${task.id}/`, task);
   return res.data;
 };
+
+// delete task
+export const DELETE_TASK = async (id: number) => {
+  const res = await api.delete<Task>(`/tasks/${id}/`);
+  return res;
+};
