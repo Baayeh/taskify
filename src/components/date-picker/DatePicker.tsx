@@ -8,7 +8,7 @@ import { timeRegex } from "../create-task/CreateTask";
 import { parseTimeAndSet } from "@/lib/utils";
 
 interface DatePickerProps {
-  setDate: React.Dispatch<React.SetStateAction<Date | undefined>>;
+  setDate: (date: Date | undefined) => void;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   addTime?: boolean;
 }

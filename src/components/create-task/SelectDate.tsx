@@ -26,7 +26,7 @@ import useDateInfo from "@/hooks/useDateInfo";
 
 interface ReminderDropDownProps {
   date: Date | undefined;
-  setDate: React.Dispatch<React.SetStateAction<Date | undefined>>;
+  setDate: (date: Date | undefined) => void;
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   isReminder?: boolean;
