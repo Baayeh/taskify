@@ -18,7 +18,7 @@ export const ScreenSizeProvider = ({ children }: { children: ReactNode }) => {
 
   // Update screen size based on window resize
   useEffect(() => {
-    const mediaQuery = window.matchMedia("(max-width: 768px)");
+    const mediaQuery = window.matchMedia("(max-width: 900px)");
 
     // Set the initial value
     setIsSmallScreen(mediaQuery.matches);
