@@ -61,7 +61,7 @@ const TaskCard: React.FC<CardProps> = ({
 
   return (
     <Card
-      className={`${showDetails ? "rounded bg-muted/50 border-0" : "bg-muted/50 rounded-md hover:cursor-pointer hover:bg-muted transition-colors duration-300 ease-in-out"} ${isFromTaskList && selectedTask?.id === task.id ? "bg-muted" : ""}`}
+      className={`${showDetails ? "rounded bg-muted/50 border-0" : "bg-muted/50 rounded-md hover:cursor-pointer hover:bg-muted transition-colors duration-300 ease-in-out"} ${showDetails && isFromTaskList && selectedTask?.id === task.id ? "bg-muted" : ""}`}
       onClick={() => !showDetails && selectTask()}
     >
       <CardContent
