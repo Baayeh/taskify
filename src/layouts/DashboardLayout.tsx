@@ -13,9 +13,6 @@ const DashboardLayout = () => {
   const ref = useRef<HTMLDivElement>(null);
   const { showDetails, setShowDetails, isSmallScreen } = useScreenSize();
 
-  console.log("showDetails", showDetails);
-  console.log("isSmallScreen", isSmallScreen);
-
   const handleClickOutside = (event: MouseEvent) => {
     if (ref.current && !ref.current.contains(event.target as Node)) {
       console.log("first");
