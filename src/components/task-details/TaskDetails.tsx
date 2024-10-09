@@ -2,7 +2,6 @@ import {
   deleteTask,
   selectTasks,
   setTask,
-  updateTask,
 } from "@/features/redux/slices/taskSlice";
 import { Button } from "../ui/button";
 
@@ -27,13 +26,15 @@ import { ScrollArea } from "../ui/scroll-area";
 import AlertDialogComp from "../alert-dialog/AlertDialogComp";
 import { useLoader } from "@/hooks/useLoader";
 import { Task } from "@/types/tasks";
+import useFetch from "@/hooks/useFetch";
 
 const TaskDetails = () => {
   const { task } = useAppSelector(selectTasks);
   const dispatch = useAppDispatch();
-  const { showDetails, setShowDetails, isSmallScreen } = useScreenSize();
+  const { setShowDetails, isSmallScreen } = useScreenSize();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const { showLoader } = useLoader();
+  const { getAllTasks } = useFetch();
 
   // State management
   const [openReminder, setOpenReminder] = useState(false);
@@ -51,7 +52,7 @@ const TaskDetails = () => {
     try {
       const res = await UPDATE_TASK(task);
       if (res) {
-        dispatch(updateTask(res));
+        await getAllTasks();
         dispatch(setTask(res));
       }
     } catch (error) {
@@ -160,7 +161,10 @@ const TaskDetails = () => {
           <Button
             variant="outline"
             size="icon"
-            onClick={() => setShowDetails(false)}
+            onClick={() => {
+              setShowDetails(false);
+              dispatch(setTask({} as Task));
+            }}
           >
             <X size={16} />
           </Button>
@@ -171,7 +175,7 @@ const TaskDetails = () => {
         className={`relative w-full h-[calc(100vh-9rem)] lg:h-[calc(100vh-10rem)] ${isSmallScreen ? "mt-6" : "mt-4"}`}
       >
         <div className="grid gap-y-4">
-          <TaskCard task={taskData} showDetails={showDetails} />
+          <TaskCard task={taskData} />
 
           {taskData.my_day ? (
             <div className="w-full rounded h-12 bg-muted/50 flex justify-between items-center gap-x-4 pl-5 pr-3">
