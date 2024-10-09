@@ -4,6 +4,8 @@ interface ScreenSizeContextType {
   isSmallScreen: boolean;
   showDetails: boolean;
   setShowDetails: React.Dispatch<React.SetStateAction<boolean>>;
+  openMenu: boolean;
+  setOpenMenu: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 // Create the context
@@ -15,6 +17,7 @@ export const ScreenSizeContext = createContext<ScreenSizeContextType | null>(
 export const ScreenSizeProvider = ({ children }: { children: ReactNode }) => {
   const [isSmallScreen, setIsSmallScreen] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
+  const [openMenu, setOpenMenu] = useState(false);
 
   // Update screen size based on window resize
   useEffect(() => {
@@ -35,7 +38,13 @@ export const ScreenSizeProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <ScreenSizeContext.Provider
-      value={{ isSmallScreen, showDetails, setShowDetails }}
+      value={{
+        isSmallScreen,
+        showDetails,
+        setShowDetails,
+        openMenu,
+        setOpenMenu,
+      }}
     >
       {children}
     </ScreenSizeContext.Provider>

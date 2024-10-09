@@ -2,13 +2,16 @@ import { Home, SquareKanban, Star, Sun, UserRound } from "lucide-react";
 import React, { useCallback } from "react";
 import { NavLink } from "react-router-dom";
 import { Badge } from "../ui/badge";
-import { useAppSelector } from "@/lib/utils";
+import { useAppDispatch, useAppSelector } from "@/lib/utils";
 import {
   selectImportantTasksCount,
   selectMyDayTasksCount,
   selectPlannedTasksCount,
   selectUncompletedTasks,
+  setTask,
 } from "@/features/redux/slices/taskSlice";
+import { useScreenSize } from "@/hooks/useScreenSize";
+import { Task } from "@/types/tasks";
 
 interface LinkProp {
   name: string;
@@ -19,8 +22,8 @@ interface LinkProp {
 const links: LinkProp[] = [
   {
     name: "My Day",
-    route: "/my-day",
-    icon: <Sun size={20} className="text-gray-500" />,
+    route: "/tasks/my-day",
+    icon: <Sun size={20} className="text-yellow-500" />,
   },
   {
     name: "Important",
@@ -49,6 +52,9 @@ const MenuList = () => {
   const importantTasksCount = useAppSelector(selectImportantTasksCount);
   const plannedTasksCount = useAppSelector(selectPlannedTasksCount);
   const myDayTasksCount = useAppSelector(selectMyDayTasksCount);
+
+  const { setOpenMenu, setShowDetails } = useScreenSize();
+  const dispatch = useAppDispatch();
 
   const getCount = useCallback(
     (name: string) => {
@@ -80,6 +86,12 @@ const MenuList = () => {
           <NavLink
             to={link.route}
             className="menu-item flex items-center justify-between whitespace-nowrap rounded-md px-3 py-3 text-sm hover:bg-muted transition-colors"
+            onClick={() => {
+              setOpenMenu(false);
+              setShowDetails(false);
+              dispatch(setTask({} as Task));
+            }}
+            end
           >
             <div className="flex items-center gap-x-4">
               {link.icon}

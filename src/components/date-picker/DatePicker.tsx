@@ -11,6 +11,7 @@ interface DatePickerProps {
   setDate: (date: Date | undefined) => void;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   addTime?: boolean;
+  isFromContextMenu?: boolean;
 }
 
 const DatePicker: React.FC<DatePickerProps> = ({
