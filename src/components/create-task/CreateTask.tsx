@@ -9,6 +9,7 @@ import AddReminder from "./AddReminder";
 import { addDays, Day, nextDay, parse } from "date-fns";
 import { useLoader } from "@/hooks/useLoader";
 import useFetch from "@/hooks/useFetch";
+import useCheckPathname from "@/hooks/useCheckPathname";
 
 interface CreateTaskProps {
   divRef: React.RefObject<HTMLDivElement>;
@@ -33,12 +34,9 @@ const CreateTask: React.FC<CreateTaskProps> = ({
   setTitle,
 }) => {
   const { showLoader } = useLoader();
-  const {
-    getAllTasks,
-    isPathnameMyDay,
-    isPathnameImportant,
-    isPathnamePlanned,
-  } = useFetch();
+  const { getAllTasks } = useFetch();
+  const { isPathnameMyDay, isPathnameImportant, isPathnamePlanned } =
+    useCheckPathname();
 
   // Create task states
   const [dueDate, setDueDate] = useState<Date | undefined>(
