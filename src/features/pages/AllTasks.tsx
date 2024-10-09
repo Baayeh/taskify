@@ -1,32 +1,14 @@
 import NoTasksPreview from "../components/NoTasksPreview";
 
 import TasksList from "../components/TaskList";
-import { useAppDispatch, useAppSelector } from "@/lib/utils";
-import { selectTasks, setTasks } from "../redux/slices/taskSlice";
-import { GET_ALL_TASKS } from "../services/tasks";
-import { useLoader } from "@/hooks/useLoader";
-import { useCallback, useEffect } from "react";
+import { selectTasks } from "../redux/slices/taskSlice";
+import { useEffect } from "react";
+import useFetch from "@/hooks/useFetch";
+import { useAppSelector } from "@/lib/utils";
 
 const AllTasks = () => {
-  const { showLoader } = useLoader();
   const { tasks } = useAppSelector(selectTasks);
-  const dispatch = useAppDispatch();
-
-  // get all tasks from services
-  const getAllTasks = useCallback(async () => {
-    showLoader(true);
-    try {
-      const data = await GET_ALL_TASKS();
-      if (data) {
-        dispatch(setTasks(data));
-      }
-    } catch (error) {
-      console.error("Failed to fetch tasks:", error);
-      // Optionally, show an error message to the user
-    } finally {
-      showLoader(false);
-    }
-  }, [dispatch, showLoader]);
+  const { getAllTasks } = useFetch();
 
   useEffect(() => {
     void getAllTasks();
