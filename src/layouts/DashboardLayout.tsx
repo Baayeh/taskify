@@ -7,11 +7,11 @@ import { LoaderProvider } from "@/context";
 import { useScreenSize } from "@/hooks/useScreenSize";
 
 const DashboardLayout = () => {
-  const [openMenu, setOpenMenu] = useState(false);
   const [open, setOpen] = useState(false);
   const [taskTitle, setTaskTitle] = useState("");
   const ref = useRef<HTMLDivElement>(null);
-  const { showDetails, setShowDetails, isSmallScreen } = useScreenSize();
+  const { showDetails, setShowDetails, isSmallScreen, openMenu, setOpenMenu } =
+    useScreenSize();
 
   const handleClickOutside = (event: MouseEvent) => {
     if (ref.current && !ref.current.contains(event.target as Node)) {
@@ -34,14 +34,18 @@ const DashboardLayout = () => {
   return (
     <LoaderProvider>
       <section className="relative h-screen border-x">
-        <nav className="fixed hidden md:block w-[20rem]">
+        <nav
+          className={`fixed w-[20rem] ${isSmallScreen ? "hidden" : "block"}`}
+        >
           <SideBar />
         </nav>
         <div
           className={`${showDetails && !isSmallScreen ? "grid grid-cols-4" : ""}`}
         >
-          <div className="col-span-3 relative pl-5 md:ml-[20rem] md:pt-6 md:pl-14 h-screen">
-            <Header setOpen={setOpenMenu} />
+          <div
+            className={`col-span-3 relative h-screen ${!isSmallScreen ? "ml-[20rem] px-14" : "pt-3 px-5 sm:px-8"}`}
+          >
+            <Header />
             <main className="mt-5">
               <Outlet />
             </main>
