@@ -6,6 +6,7 @@ import { RootState } from "../store";
 interface TaskState {
   task: Task;
   tasks: Task[];
+  myDayTasks: Task[];
   importantTasks: Task[];
   completedTasks: Task[];
   plannedTasks: Task[];
@@ -14,6 +15,7 @@ interface TaskState {
 const initialState: TaskState = {
   task: {} as Task,
   tasks: [],
+  myDayTasks: [],
   importantTasks: [],
   completedTasks: [],
   plannedTasks: [],
@@ -29,15 +31,8 @@ export const taskSlice = createSlice({
     setTasks: (state, action: PayloadAction<Task[]>) => {
       state.tasks = action.payload;
     },
-    updateTask: (state, action: PayloadAction<Task>) => {
-      const task = action.payload;
-      state.tasks = state.tasks.map((t) => (t.id === task.id ? task : t));
-    },
-    deleteTask: (state, action: PayloadAction<number>) => {
-      state.tasks = state.tasks.filter((task) => task.id !== action.payload);
-    },
-    addTask: (state, action: PayloadAction<Task>) => {
-      state.tasks.unshift(action.payload);
+    setMyDayTasks: (state, action: PayloadAction<Task[]>) => {
+      state.myDayTasks = action.payload;
     },
     setImportantTasks: (state, action: PayloadAction<Task[]>) => {
       state.importantTasks = action.payload;
@@ -48,6 +43,16 @@ export const taskSlice = createSlice({
     setPlannedTasks: (state, action: PayloadAction<Task[]>) => {
       state.plannedTasks = action.payload;
     },
+    updateTask: (state, action: PayloadAction<Task>) => {
+      const task = action.payload;
+      state.tasks = state.tasks.map((t) => (t.id === task.id ? task : t));
+    },
+    deleteTask: (state, action: PayloadAction<number>) => {
+      state.tasks = state.tasks.filter((task) => task.id !== action.payload);
+    },
+    addTask: (state, action: PayloadAction<Task>) => {
+      state.tasks.unshift(action.payload);
+    },
   },
 });
 
@@ -55,6 +60,7 @@ export const {
   setTask,
   setTasks,
   addTask,
+  setMyDayTasks,
   setImportantTasks,
   setCompletedTasks,
   setPlannedTasks,
