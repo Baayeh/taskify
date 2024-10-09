@@ -1,4 +1,4 @@
-import { LoaderContext } from "@/components";
+import { LoaderContext } from "@/context";
 import { useContext } from "react";
 
 export const useLoader = () => {

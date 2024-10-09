@@ -1,4 +1,3 @@
-export { LoaderProvider, LoaderContext } from "./LoaderProvider";
 export { ThemeProvider, ThemeProviderContext } from "./ThemeProvider";
 
 export { default as Header } from "./header/Header";

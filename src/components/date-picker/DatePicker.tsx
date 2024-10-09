@@ -2,13 +2,13 @@ import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Calendar } from "../ui/calendar";
 import { Button } from "../ui/button";
 import { CalendarClock } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import TimePicker from "./TimePicker";
 import { timeRegex } from "../create-task/CreateTask";
 import { parseTimeAndSet } from "@/lib/utils";
 
 interface DatePickerProps {
-  setDate: React.Dispatch<React.SetStateAction<Date | undefined>>;
+  setDate: (date: Date | undefined) => void;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   addTime?: boolean;
 }
@@ -25,7 +25,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
 
   const time = `${hours}:${minutes}${period}`;
 
-  const timeMatch = timeRegex.exec(time);
+  const timeMatch = useMemo(() => timeRegex.exec(time), [time]);
 
   const clearTime = () => {
     setHours("00");
@@ -34,20 +34,15 @@ const DatePicker: React.FC<DatePickerProps> = ({
   };
 
   useEffect(() => {
-    if (!selectedDate && !timeMatch) return;
+    if (!addTime) return;
 
-    // If no time is provided, set the date as it is
-    if (!selectedDate && timeMatch) {
-      const newDate = parseTimeAndSet(new Date(), timeMatch);
+    const newDate = parseTimeAndSet(selectedDate ?? new Date(), timeMatch);
+
+    // Prevent unnecessary state updates
+    if (selectedDate?.getTime() !== newDate.getTime()) {
       setSelectedDate(newDate);
     }
-
-    // If time is provided, set the date with time
-    if (selectedDate && timeMatch) {
-      const newDate = parseTimeAndSet(selectedDate, timeMatch);
-      setSelectedDate(newDate);
-    }
-  }, [selectedDate]);
+  }, [selectedDate, addTime]);
 
   return (
     <Popover onOpenChange={setOpen}>

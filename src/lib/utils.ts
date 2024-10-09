@@ -2,7 +2,7 @@ import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/features/redux/store";
-import { format, set } from "date-fns";
+import { format, isToday, isTomorrow, set } from "date-fns";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -40,15 +40,19 @@ export const parseTimeAndSet = (
 };
 
 // function to display date
-export const displayDate = (date: Date, today: Date, tomorrow: Date) => {
-  if (!date) return null;
+export const displayDate = (date: Date, today?: Date, tomorrow?: Date) => {
+  const formattedDate = format(date, "EEE, dd MMM");
 
-  switch (formatDate(date)) {
-    case formatDate(today):
-      return "Today";
-    case formatDate(tomorrow):
-      return "Tomorrow";
-    default:
-      return format(date, "EEE, dd MMM");
+  if (today && formatDate(date) === formatDate(today)) {
+    return "Today";
   }
+
+  if (tomorrow && formatDate(date) === formatDate(tomorrow)) {
+    return "Tomorrow";
+  }
+
+  if (isToday(date)) return "Today";
+  if (isTomorrow(date)) return "Tomorrow";
+
+  return formattedDate;
 };

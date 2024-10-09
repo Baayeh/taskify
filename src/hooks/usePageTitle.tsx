@@ -11,10 +11,10 @@ export const usePageTitle = () => {
   const { pathname } = useLocation();
 
   const titles: Record<string, TitleProps> = {
-    "/my-day": {
+    "/tasks/my-day": {
       title: "My Day",
       icon: <Sun size={30} />,
-      color: "text-gray-500",
+      color: "text-yellow-500",
     },
     "/tasks/important": {
       title: "Important",

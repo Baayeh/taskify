@@ -33,6 +33,9 @@ export const taskSlice = createSlice({
       const task = action.payload;
       state.tasks = state.tasks.map((t) => (t.id === task.id ? task : t));
     },
+    deleteTask: (state, action: PayloadAction<number>) => {
+      state.tasks = state.tasks.filter((task) => task.id !== action.payload);
+    },
     addTask: (state, action: PayloadAction<Task>) => {
       state.tasks.unshift(action.payload);
     },
@@ -49,12 +52,14 @@ export const taskSlice = createSlice({
 });
 
 export const {
+  setTask,
   setTasks,
   addTask,
   setImportantTasks,
   setCompletedTasks,
   setPlannedTasks,
   updateTask,
+  deleteTask,
 } = taskSlice.actions;
 export const selectTasks = (state: RootState) => state.tasks;
 
