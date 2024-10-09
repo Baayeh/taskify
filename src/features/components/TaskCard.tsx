@@ -10,6 +10,7 @@ import { useScreenSize } from "@/hooks/useScreenSize";
 import { isPast } from "date-fns";
 import useFetch from "@/hooks/useFetch";
 import { useLoader } from "@/hooks/useLoader";
+import useCheckPathname from "@/hooks/useCheckPathname";
 
 interface CardProps {
   task: Task;
@@ -29,6 +30,7 @@ const TaskCard: React.FC<CardProps> = ({
   const { showDetails, setShowDetails } = useScreenSize();
   const { task: selectedTask } = useAppSelector(selectTasks);
   const { getAllTasks } = useFetch();
+  const { isPathnameMyDay } = useCheckPathname();
 
   const markAsCompleted = async (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -80,7 +82,7 @@ const TaskCard: React.FC<CardProps> = ({
   return (
     <>
       <Card
-        className={`hover:cursor-pointer ${showDetails ? "rounded bg-muted/50 border-0" : "bg-muted/50 rounded-md hover:bg-muted transition-colors duration-300 ease-in-out"} ${isFromTaskList && selectedTask?.id === task.id ? "bg-muted" : ""}`}
+        className={`hover:cursor-pointer ${showDetails ? "rounded bg-muted/50 border-0" : "bg-muted/50 rounded-md hover:bg-muted transition-colors duration-300 ease-in-out"} ${isFromTaskList && selectedTask?.id === task.id ? "bg-muted" : ""} ${isPathnameMyDay ? "bg-muted/80 border-muted/80" : ""}`}
         onClick={() => selectTask()}
         onContextMenu={(e) => {
           if (onContextMenu) onContextMenu(e);

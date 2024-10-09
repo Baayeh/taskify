@@ -5,6 +5,7 @@ import { Sheet, SheetContent } from "@/components/ui/sheet";
 import TaskDetails from "@/components/task-details/TaskDetails";
 import { LoaderProvider } from "@/context";
 import { useScreenSize } from "@/hooks/useScreenSize";
+import useCheckPathname from "@/hooks/useCheckPathname";
 
 const DashboardLayout = () => {
   const [open, setOpen] = useState(false);
@@ -12,6 +13,7 @@ const DashboardLayout = () => {
   const ref = useRef<HTMLDivElement>(null);
   const { showDetails, setShowDetails, isSmallScreen, openMenu, setOpenMenu } =
     useScreenSize();
+  const { isPathnameMyDay } = useCheckPathname();
 
   const handleClickOutside = (event: MouseEvent) => {
     if (ref.current && !ref.current.contains(event.target as Node)) {
@@ -43,19 +45,23 @@ const DashboardLayout = () => {
           className={`${showDetails && !isSmallScreen ? "grid grid-cols-4" : ""}`}
         >
           <div
-            className={`col-span-3 relative h-screen ${!isSmallScreen ? "ml-[20rem] px-14" : "pt-3 px-5 sm:px-8"}`}
+            className={`col-span-3 relative h-screen ${isPathnameMyDay ? "relative bg-my-day" : ""} ${!isSmallScreen ? "ml-[20rem] px-14" : "pt-3 px-5 sm:px-8"}`}
           >
-            <Header />
-            <main className="mt-5">
-              <Outlet />
-            </main>
-            <CreateTask
-              divRef={ref}
-              open={open}
-              setOpen={setOpen}
-              title={taskTitle}
-              setTitle={setTaskTitle}
-            />
+            <div className={`${isPathnameMyDay ? "bg-overlay" : ""}`} />
+
+            <div className={`${isPathnameMyDay ? "bg-content" : ""}`}>
+              <Header />
+              <main className="mt-5">
+                <Outlet />
+              </main>
+              <CreateTask
+                divRef={ref}
+                open={open}
+                setOpen={setOpen}
+                title={taskTitle}
+                setTitle={setTaskTitle}
+              />
+            </div>
           </div>
           {showDetails && !isSmallScreen && (
             <section className="col-span-1 border-l p-5">

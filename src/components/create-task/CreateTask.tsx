@@ -138,7 +138,7 @@ const CreateTask: React.FC<CreateTaskProps> = ({
         </Label>
       ) : (
         <div
-          className="p-4 text-sm rounded flex items-center gap-x-3 text-primary bg-muted/50 hover:cursor-text hover:bg-muted transition-colors duration-300 ease-in-out"
+          className={`p-4 text-sm rounded flex items-center gap-x-3 text-primary bg-muted/50 hover:cursor-text hover:bg-muted transition-colors duration-300 ease-in-out ${isPathnameMyDay ? "bg-muted/80" : ""}`}
           onClick={() => setOpen(true)}
         >
           <Plus />
