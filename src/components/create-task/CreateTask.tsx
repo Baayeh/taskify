@@ -4,10 +4,11 @@ import { Circle, Plus } from "lucide-react";
 import AddDueDate from "./AddDueDate";
 import { useEffect, useState } from "react";
 import { ADD_TASK } from "@/features/services/tasks";
-import { parseTimeAndSet, useAppDispatch } from "@/lib/utils";
-import { addTask } from "@/features/redux/slices/taskSlice";
+import { parseTimeAndSet } from "@/lib/utils";
 import AddReminder from "./AddReminder";
 import { addDays, Day, nextDay, parse } from "date-fns";
+import { useLoader } from "@/hooks/useLoader";
+import useFetch from "@/hooks/useFetch";
 
 interface CreateTaskProps {
   divRef: React.RefObject<HTMLDivElement>;
@@ -31,32 +32,49 @@ const CreateTask: React.FC<CreateTaskProps> = ({
   title,
   setTitle,
 }) => {
-  const [dueDate, setDueDate] = useState<Date | undefined>();
+  const { showLoader } = useLoader();
+  const {
+    getAllTasks,
+    isPathnameMyDay,
+    isPathnameImportant,
+    isPathnamePlanned,
+  } = useFetch();
+
+  // Create task states
+  const [dueDate, setDueDate] = useState<Date | undefined>(
+    isPathnamePlanned ? new Date() : undefined
+  );
   const [reminder, setReminder] = useState<Date | undefined>();
-  const dispatch = useAppDispatch();
 
   const createTask = async () => {
     if (!title) return;
+
+    showLoader(true);
 
     const task = {
       title,
       due_date: dueDate ?? null,
       reminder: reminder ?? null,
+      my_day: isPathnameMyDay,
+      important: isPathnameImportant,
     };
 
     try {
       const res = await ADD_TASK(task);
 
       if (res) {
-        dispatch(addTask(res));
+        await getAllTasks();
+
+        // Reset fields after task creation
         setTitle("");
         setDueDate(undefined);
         setReminder(undefined);
-
         setOpen(false);
       }
     } catch (error) {
-      console.log(error);
+      console.error("Error creating task:", error);
+    } finally {
+      showLoader(false);
     }
   };
 
@@ -100,7 +118,7 @@ const CreateTask: React.FC<CreateTaskProps> = ({
   }, [title, parseTimeAndSet]);
 
   return (
-    <div ref={divRef} className="mt-5 md:mt-7 pr-5 md:pr-14">
+    <div ref={divRef} className="mt-10">
       {open ? (
         <Label htmlFor="create-task" className="relative">
           <Circle className="absolute top-1/2 -translate-y-1/2 left-4 text-primary" />
