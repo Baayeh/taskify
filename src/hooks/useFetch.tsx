@@ -6,28 +6,12 @@ import {
 } from "@/features/redux/slices/taskSlice";
 import { GET_ALL_TASKS } from "@/features/services/tasks";
 import { useAppDispatch } from "@/lib/utils";
-import { useCallback, useMemo } from "react";
+import { useCallback } from "react";
 import { useLoader } from "./useLoader";
-import { useLocation } from "react-router-dom";
 
 const useFetch = () => {
   const dispatch = useAppDispatch();
   const { showLoader } = useLoader();
-  const { pathname } = useLocation();
-
-  const isPathnameDefault = useMemo(() => pathname === "/tasks", [pathname]);
-  const isPathnameMyDay = useMemo(
-    () => pathname === "/tasks/my-day",
-    [pathname]
-  );
-  const isPathnameImportant = useMemo(
-    () => pathname === "/tasks/important",
-    [pathname]
-  );
-  const isPathnamePlanned = useMemo(
-    () => pathname === "/tasks/planned",
-    [pathname]
-  );
 
   // get all tasks from services
   const getAllTasks = useCallback(async () => {
@@ -52,10 +36,6 @@ const useFetch = () => {
 
   return {
     getAllTasks,
-    isPathnameDefault,
-    isPathnameMyDay,
-    isPathnameImportant,
-    isPathnamePlanned,
   };
 };
 
