@@ -17,7 +17,6 @@ const DashboardLayout = () => {
 
   const handleClickOutside = (event: MouseEvent) => {
     if (ref.current && !ref.current.contains(event.target as Node)) {
-      console.log("first");
       setOpen(false);
     }
   };

@@ -120,7 +120,8 @@ const TaskCard: React.FC<CardProps> = ({
                     {task.repeat && <RefreshCw size={12} />}
                   </div>
                   {(task.due_date || task.repeat) &&
-                  ((task.reminder && !isPast(task.reminder)) || task.note) ? (
+                  ((task.reminder && !isPast(task.reminder)) ||
+                    task.note !== "") ? (
                     <Dot className="hidden sm:block" />
                   ) : null}
 
@@ -136,7 +137,8 @@ const TaskCard: React.FC<CardProps> = ({
                   )}
 
                   {(task.due_date || task.repeat) &&
-                  ((task.reminder && !isPast(task.reminder)) || task.note) ? (
+                  ((task.reminder && !isPast(task.reminder)) ||
+                    task.note !== "") ? (
                     <Dot className="hidden sm:block" />
                   ) : null}
 
