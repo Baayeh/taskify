@@ -1,8 +1,4 @@
-import {
-  deleteTask,
-  selectTasks,
-  setTask,
-} from "@/features/redux/slices/taskSlice";
+import { selectTasks, setTask } from "@/features/redux/slices/taskSlice";
 import { Button } from "../ui/button";
 
 import TaskCard from "@/features/components/TaskCard";
@@ -119,7 +115,7 @@ const TaskDetails = () => {
     showLoader(true);
     try {
       await DELETE_TASK(task.id);
-      dispatch(deleteTask(task.id));
+      await getAllTasks();
       setOpenDeleteModal(false);
       setShowDetails(false);
     } catch (error) {
