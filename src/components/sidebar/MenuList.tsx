@@ -28,17 +28,17 @@ const links: LinkProp[] = [
   {
     name: "Important",
     route: "/tasks/important",
-    icon: <Star size={20} className="text-pink-200" />,
+    icon: <Star size={20} className="text-pink-500" />,
   },
   {
     name: "Planned",
     route: "/tasks/planned",
-    icon: <SquareKanban size={20} className="text-teal-200" />,
+    icon: <SquareKanban size={20} className="text-teal-500" />,
   },
   {
     name: "Assigned to me",
     route: "/tasks/mine",
-    icon: <UserRound size={20} className="text-green-400" />,
+    icon: <UserRound size={20} className="text-green-500" />,
   },
   {
     name: "Tasks",

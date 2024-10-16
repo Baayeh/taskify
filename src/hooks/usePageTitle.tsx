@@ -19,17 +19,17 @@ export const usePageTitle = () => {
     "/tasks/important": {
       title: "Important",
       icon: <Star size={30} />,
-      color: "text-pink-200",
+      color: "text-pink-500",
     },
     "/tasks/planned": {
       title: "Planned",
       icon: <SquareKanban size={30} />,
-      color: "text-teal-200",
+      color: "text-teal-500",
     },
     "/tasks/mine": {
       title: "Assigned to me",
       icon: <UserRound size={30} />,
-      color: "text-green-400",
+      color: "text-green-500",
     },
     "/tasks": {
       title: "Tasks",

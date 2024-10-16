@@ -82,7 +82,7 @@ const TaskCard: React.FC<CardProps> = ({
   return (
     <>
       <Card
-        className={`hover:cursor-pointer ${showDetails ? "rounded bg-muted/50 border-0" : "bg-muted/50 rounded-md hover:bg-muted transition-colors duration-300 ease-in-out"} ${isFromTaskList && selectedTask?.id === task.id ? "bg-muted" : ""} ${isPathnameMyDay ? "bg-muted/80 border-muted/80" : ""}`}
+        className={`hover:cursor-pointer ${showDetails ? "rounded bg-muted/50 border-0" : "bg-muted/50 rounded-md hover:bg-muted transition-colors duration-300 ease-in-out"} ${isPathnameMyDay ? "bg-muted/80 border-muted/80" : ""} ${isFromTaskList && selectedTask?.id === task.id ? "bg-muted" : ""}`}
         onClick={() => selectTask()}
         onContextMenu={(e) => {
           if (onContextMenu) onContextMenu(e);
@@ -120,7 +120,8 @@ const TaskCard: React.FC<CardProps> = ({
                     {task.repeat && <RefreshCw size={12} />}
                   </div>
                   {(task.due_date || task.repeat) &&
-                  ((task.reminder && !isPast(task.reminder)) || task.note) ? (
+                  ((task.reminder && !isPast(task.reminder)) ||
+                    task.note !== "") ? (
                     <Dot className="hidden sm:block" />
                   ) : null}
 
@@ -136,7 +137,8 @@ const TaskCard: React.FC<CardProps> = ({
                   )}
 
                   {(task.due_date || task.repeat) &&
-                  ((task.reminder && !isPast(task.reminder)) || task.note) ? (
+                  ((task.reminder && !isPast(task.reminder)) ||
+                    task.note !== "") ? (
                     <Dot className="hidden sm:block" />
                   ) : null}
 

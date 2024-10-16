@@ -17,7 +17,6 @@ const DashboardLayout = () => {
 
   const handleClickOutside = (event: MouseEvent) => {
     if (ref.current && !ref.current.contains(event.target as Node)) {
-      console.log("first");
       setOpen(false);
     }
   };
@@ -47,21 +46,17 @@ const DashboardLayout = () => {
           <div
             className={`col-span-3 relative h-screen ${isPathnameMyDay ? "relative bg-my-day" : ""} ${!isSmallScreen ? "ml-[20rem] px-14" : "pt-3 px-5 sm:px-8"}`}
           >
-            <div className={`${isPathnameMyDay ? "bg-overlay" : ""}`} />
-
-            <div className={`${isPathnameMyDay ? "bg-content" : ""}`}>
-              <Header />
-              <main className="mt-5">
-                <Outlet />
-              </main>
-              <CreateTask
-                divRef={ref}
-                open={open}
-                setOpen={setOpen}
-                title={taskTitle}
-                setTitle={setTaskTitle}
-              />
-            </div>
+            <Header />
+            <main className="mt-5">
+              <Outlet />
+            </main>
+            <CreateTask
+              divRef={ref}
+              open={open}
+              setOpen={setOpen}
+              title={taskTitle}
+              setTitle={setTaskTitle}
+            />
           </div>
           {showDetails && !isSmallScreen && (
             <section className="col-span-1 border-l p-5">

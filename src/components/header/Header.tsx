@@ -5,7 +5,7 @@ import { format } from "date-fns";
 import { useScreenSize } from "@/hooks/useScreenSize";
 
 const Header = () => {
-  const { title, color } = usePageTitle();
+  const { title, color, icon } = usePageTitle();
   const { isSmallScreen, setOpenMenu: setOpen } = useScreenSize();
 
   return (
@@ -25,7 +25,7 @@ const Header = () => {
           <h1
             className={`text-3xl font-semibold flex items-center gap-x-5 ${color}`}
           >
-            {/* {icon} */}
+            {icon}
             <span>{title}</span>
           </h1>
           {title === "My Day" ? (

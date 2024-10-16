@@ -76,19 +76,21 @@ export const selectUncompletedTasks = createSelector(
 
 export const selectImportantTasksCount = createSelector(
   (state: RootState) => state.tasks.tasks,
-  (tasks) => tasks.filter((task) => task.important).length
+  (tasks) => tasks.filter((task) => !task.completed && task.important).length
 );
 
 export const selectPlannedTasksCount = createSelector(
   (state: RootState) => state.tasks.tasks,
   (tasks) =>
-    tasks.filter((task) => task.due_date != null || task.reminder != null)
-      .length
+    tasks.filter(
+      (task) =>
+        !task.completed && (task.due_date != null || task.reminder != null)
+    ).length
 );
 
 export const selectMyDayTasksCount = createSelector(
   (state: RootState) => state.tasks.tasks,
-  (tasks) => tasks.filter((task) => task.my_day).length
+  (tasks) => tasks.filter((task) => !task.completed && task.my_day).length
 );
 
 export default taskSlice.reducer;

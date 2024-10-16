@@ -10,6 +10,7 @@ import { addDays, Day, nextDay, parse } from "date-fns";
 import { useLoader } from "@/hooks/useLoader";
 import useFetch from "@/hooks/useFetch";
 import useCheckPathname from "@/hooks/useCheckPathname";
+import { useLocation } from "react-router-dom";
 
 interface CreateTaskProps {
   divRef: React.RefObject<HTMLDivElement>;
@@ -37,11 +38,10 @@ const CreateTask: React.FC<CreateTaskProps> = ({
   const { getAllTasks } = useFetch();
   const { isPathnameMyDay, isPathnameImportant, isPathnamePlanned } =
     useCheckPathname();
+  const { pathname } = useLocation();
 
   // Create task states
-  const [dueDate, setDueDate] = useState<Date | undefined>(
-    isPathnamePlanned ? new Date() : undefined
-  );
+  const [dueDate, setDueDate] = useState<Date | undefined>();
   const [reminder, setReminder] = useState<Date | undefined>();
 
   const createTask = async () => {
@@ -91,6 +91,8 @@ const CreateTask: React.FC<CreateTaskProps> = ({
 
     const now = new Date();
 
+    if (isPathnamePlanned) setDueDate(now);
+
     if (dayMatch) {
       const day = dayMatch[0];
       const dayIndex = parse(day, "EEEE", new Date()).getDay();
@@ -114,6 +116,10 @@ const CreateTask: React.FC<CreateTaskProps> = ({
       setDueDate(timeMatch ? undefined : tomorrow); // Set due date if no time is provided
     }
   }, [title, parseTimeAndSet]);
+
+  useEffect(() => {
+    setTitle("");
+  }, [pathname]);
 
   return (
     <div ref={divRef} className="mt-10">

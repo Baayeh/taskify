@@ -3,9 +3,10 @@ import TaskContextMenuButtons from "./TaskContextMenuButtons";
 import { useLoader } from "@/hooks/useLoader";
 import { DELETE_TASK, UPDATE_TASK } from "../services/tasks";
 import { useAppDispatch } from "@/lib/utils";
-import { deleteTask, setTask, updateTask } from "../redux/slices/taskSlice";
+import { setTask } from "../redux/slices/taskSlice";
 import { useState } from "react";
 import AlertDialogComp from "@/components/alert-dialog/AlertDialogComp";
+import useFetch from "@/hooks/useFetch";
 
 interface Props {
   rightClickedTask: Task;
@@ -26,6 +27,7 @@ const TaskContextMenu: React.FC<Props> = ({
 }) => {
   const { showLoader } = useLoader();
   const dispatch = useAppDispatch();
+  const { getAllTasks } = useFetch();
 
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
 
@@ -38,7 +40,7 @@ const TaskContextMenu: React.FC<Props> = ({
       const res = await UPDATE_TASK(updatedTask);
 
       if (res) {
-        dispatch(updateTask(res));
+        await getAllTasks();
         dispatch(setTask(res));
       }
     } catch (error) {
@@ -54,7 +56,7 @@ const TaskContextMenu: React.FC<Props> = ({
     showLoader(true);
     try {
       await DELETE_TASK(task.id);
-      dispatch(deleteTask(task.id));
+      await getAllTasks();
       setOpenDeleteModal(false);
     } catch (error) {
       console.log(error);
