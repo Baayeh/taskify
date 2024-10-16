@@ -1,7 +1,7 @@
 import { tasksRoutes } from "@/features";
 import { DashboardLayout, RootLayout } from "../layouts";
 import { Navigate } from "react-router-dom";
-import Login from "@/features/pages/auth/Login";
+import AuthLayout from "@/layouts/AuthLayout";
 
 const routes = [
   {
@@ -10,11 +10,11 @@ const routes = [
     children: [
       {
         index: true,
-        element: <Navigate to="/login" />,
+        element: <Navigate to="/auth" />,
       },
       {
-        path: "/login",
-        element: <Login />,
+        path: "/auth",
+        element: <AuthLayout />,
       },
       {
         path: "/tasks",
