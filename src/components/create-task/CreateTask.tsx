@@ -34,7 +34,7 @@ const CreateTask: React.FC<CreateTaskProps> = ({
   title,
   setTitle,
 }) => {
-  const { showLoader } = useLoader();
+  const { setLoading } = useLoader();
   const { getAllTasks } = useFetch();
   const { isPathnameMyDay, isPathnameImportant, isPathnamePlanned } =
     useCheckPathname();
@@ -47,7 +47,7 @@ const CreateTask: React.FC<CreateTaskProps> = ({
   const createTask = async () => {
     if (!title) return;
 
-    showLoader(true);
+    setLoading(true);
 
     const task = {
       title,
@@ -72,7 +72,7 @@ const CreateTask: React.FC<CreateTaskProps> = ({
     } catch (error) {
       console.error("Error creating task:", error);
     } finally {
-      showLoader(false);
+      setLoading(false);
     }
   };
 
