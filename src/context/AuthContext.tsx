@@ -1,5 +1,6 @@
 import { User } from "@/types/auth";
 import { createContext, useState, useEffect, ReactNode } from "react";
+import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 interface AuthContextType {
@@ -9,6 +10,8 @@ interface AuthContextType {
   isAuthenticated: boolean;
   login: (accessToken: string, refreshToken: string, userData: User) => void;
   logout: () => void;
+  openLogoutModal: boolean;
+  setOpenLogoutModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(
@@ -22,6 +25,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [refreshToken, setRefreshToken] = useState<string | null>(
     sessionStorage.getItem("refresh_token")
   );
+
+  const [openLogoutModal, setOpenLogoutModal] = useState(false);
 
   const parsedUser = JSON.parse(sessionStorage.getItem("user") ?? "{}") as User;
 
@@ -47,14 +52,24 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const logout = () => {
-    sessionStorage.removeItem("access_token");
-    sessionStorage.removeItem("refresh_token");
-    sessionStorage.removeItem("user");
+    toast.loading("Logging out...");
 
-    setAccessToken(null);
-    setRefreshToken(null);
-    setUser(null);
-    navigate("/login");
+    setTimeout(() => {
+      // Clear tokens and user data from sessionStorage
+      sessionStorage.removeItem("access_token");
+      sessionStorage.removeItem("refresh_token");
+      sessionStorage.removeItem("user");
+
+      // Reset states
+      setAccessToken(null);
+      setRefreshToken(null);
+      setUser(null);
+
+      // Redirect to login page
+      setOpenLogoutModal(false);
+      navigate("/auth", { replace: true });
+      toast.dismiss();
+    }, 2000);
   };
 
   const isAuthenticated = !!accessToken;
@@ -68,6 +83,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         login,
         logout,
         user,
+        openLogoutModal,
+        setOpenLogoutModal,
       }}
     >
       {children}

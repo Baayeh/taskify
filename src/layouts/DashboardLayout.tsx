@@ -11,6 +11,8 @@ import { Sheet, SheetContent } from "@/components/ui/sheet";
 import TaskDetails from "@/components/task-details/TaskDetails";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import useCheckPathname from "@/hooks/useCheckPathname";
+import { useAuth } from "@/hooks/useAuth";
+import AlertDialogComp from "@/components/alert-dialog/AlertDialogComp";
 
 const DashboardLayout = () => {
   const [open, setOpen] = useState(false);
@@ -19,6 +21,8 @@ const DashboardLayout = () => {
   const { showDetails, setShowDetails, isSmallScreen, openMenu, setOpenMenu } =
     useScreenSize();
   const { isPathnameMyDay } = useCheckPathname();
+
+  const { openLogoutModal, setOpenLogoutModal, logout } = useAuth();
 
   const handleClickOutside = (event: MouseEvent) => {
     if (ref.current && !ref.current.contains(event.target as Node)) {
@@ -85,6 +89,19 @@ const DashboardLayout = () => {
             <SideBar />
           </SheetContent>
         </Sheet>
+      )}
+
+      {openLogoutModal && (
+        <AlertDialogComp
+          open={openLogoutModal}
+          setOpen={setOpenLogoutModal}
+          title="Confirm Logout"
+          description="Are you sure you want to logout?"
+          action={() => {
+            logout();
+          }}
+          actionLabel="Yes, logout"
+        />
       )}
     </ProtectedRoute>
   );
