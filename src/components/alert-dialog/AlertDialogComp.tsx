@@ -14,6 +14,7 @@ interface AlertDialogProps {
   title: string;
   description: string;
   action: () => void;
+  actionLabel?: string;
 }
 
 const AlertDialogComp: React.FC<AlertDialogProps> = ({
@@ -22,6 +23,7 @@ const AlertDialogComp: React.FC<AlertDialogProps> = ({
   title,
   description,
   action,
+  actionLabel,
 }) => {
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
@@ -35,7 +37,7 @@ const AlertDialogComp: React.FC<AlertDialogProps> = ({
             Cancel
           </Button>
           <Button variant="destructive" onClick={action}>
-            Delete
+            {actionLabel ?? "Delete"}
           </Button>
         </AlertDialogFooter>
       </AlertDialogContent>
