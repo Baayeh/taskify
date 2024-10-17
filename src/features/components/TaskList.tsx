@@ -52,8 +52,8 @@ const TasksList: React.FC<Props> = ({ tasks }) => {
   }, [tasks, pathname]);
 
   const sortArray = (a: Task, b: Task) => {
-    const dateA = new Date(a.updated);
-    const dateB = new Date(b.updated);
+    const dateA = new Date(a.updated_at);
+    const dateB = new Date(b.updated_at);
     return dateB.getTime() - dateA.getTime(); // Sorting by most recent);
   };
 
