@@ -11,11 +11,11 @@ import { useLoader } from "./useLoader";
 
 const useFetch = () => {
   const dispatch = useAppDispatch();
-  const { showLoader } = useLoader();
+  const { setLoading } = useLoader();
 
   // get all tasks from services
   const getAllTasks = useCallback(async () => {
-    showLoader(true);
+    setLoading(true);
     try {
       const data = await GET_ALL_TASKS();
       if (data) {
@@ -30,9 +30,9 @@ const useFetch = () => {
       console.error("Failed to fetch tasks:", error);
       // Optionally, show an error message to the user
     } finally {
-      showLoader(false);
+      setLoading(false);
     }
-  }, [dispatch, showLoader]);
+  }, [dispatch, setLoading]);
 
   return {
     getAllTasks,

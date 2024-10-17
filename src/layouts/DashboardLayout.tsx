@@ -1,11 +1,18 @@
 import { Outlet } from "react-router-dom";
-import { CreateTask, Header, Loader, SideBar } from "../components";
+import {
+  CreateTask,
+  Header,
+  Loader,
+  ProtectedRoute,
+  SideBar,
+} from "../components";
 import { useEffect, useRef, useState } from "react";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import TaskDetails from "@/components/task-details/TaskDetails";
-import { LoaderProvider } from "@/context";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import useCheckPathname from "@/hooks/useCheckPathname";
+import { useAuth } from "@/hooks/useAuth";
+import AlertDialogComp from "@/components/alert-dialog/AlertDialogComp";
 
 const DashboardLayout = () => {
   const [open, setOpen] = useState(false);
@@ -14,6 +21,8 @@ const DashboardLayout = () => {
   const { showDetails, setShowDetails, isSmallScreen, openMenu, setOpenMenu } =
     useScreenSize();
   const { isPathnameMyDay } = useCheckPathname();
+
+  const { openLogoutModal, setOpenLogoutModal, logout } = useAuth();
 
   const handleClickOutside = (event: MouseEvent) => {
     if (ref.current && !ref.current.contains(event.target as Node)) {
@@ -33,7 +42,7 @@ const DashboardLayout = () => {
   }, [open, taskTitle]);
 
   return (
-    <LoaderProvider>
+    <ProtectedRoute>
       <section className="relative h-screen border-x">
         <nav
           className={`fixed w-[20rem] ${isSmallScreen ? "hidden" : "block"}`}
@@ -81,7 +90,20 @@ const DashboardLayout = () => {
           </SheetContent>
         </Sheet>
       )}
-    </LoaderProvider>
+
+      {openLogoutModal && (
+        <AlertDialogComp
+          open={openLogoutModal}
+          setOpen={setOpenLogoutModal}
+          title="Confirm Logout"
+          description="Are you sure you want to logout?"
+          action={() => {
+            logout();
+          }}
+          actionLabel="Yes, logout"
+        />
+      )}
+    </ProtectedRoute>
   );
 };
 

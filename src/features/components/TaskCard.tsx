@@ -26,7 +26,7 @@ const TaskCard: React.FC<CardProps> = ({
   resetContextMenu,
 }) => {
   const dispatch = useAppDispatch();
-  const { showLoader } = useLoader();
+  const { setLoading } = useLoader();
   const { showDetails, setShowDetails } = useScreenSize();
   const { task: selectedTask } = useAppSelector(selectTasks);
   const { getAllTasks } = useFetch();
@@ -51,7 +51,7 @@ const TaskCard: React.FC<CardProps> = ({
 
   const markAsImportant = async (e: React.MouseEvent) => {
     e.stopPropagation();
-    showLoader(true);
+    setLoading(true);
 
     try {
       const res = await UPDATE_TASK({ ...task, important: !task.important });
@@ -63,7 +63,7 @@ const TaskCard: React.FC<CardProps> = ({
     } catch (error) {
       console.log("Error marking task as important:", error);
     } finally {
-      showLoader(false);
+      setLoading(false);
     }
 
     if (isFromTaskList && resetContextMenu) resetContextMenu();

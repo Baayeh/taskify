@@ -25,7 +25,7 @@ const TaskContextMenu: React.FC<Props> = ({
   isToggled,
   resetContextMenu,
 }) => {
-  const { showLoader } = useLoader();
+  const { setLoading } = useLoader();
   const dispatch = useAppDispatch();
   const { getAllTasks } = useFetch();
 
@@ -33,7 +33,7 @@ const TaskContextMenu: React.FC<Props> = ({
 
   const handleTaskUpdate = async (field: keyof Task, value: unknown) => {
     if (!task) return;
-    showLoader(true);
+    setLoading(true);
 
     try {
       const updatedTask = { ...task, [field]: value };
@@ -46,14 +46,14 @@ const TaskContextMenu: React.FC<Props> = ({
     } catch (error) {
       console.log(error);
     } finally {
-      showLoader(false);
+      setLoading(false);
 
       resetContextMenu();
     }
   };
 
   const deleteTaskHandler = async () => {
-    showLoader(true);
+    setLoading(true);
     try {
       await DELETE_TASK(task.id);
       await getAllTasks();
@@ -61,7 +61,7 @@ const TaskContextMenu: React.FC<Props> = ({
     } catch (error) {
       console.log(error);
     } finally {
-      showLoader(false);
+      setLoading(false);
       resetContextMenu();
     }
   };
