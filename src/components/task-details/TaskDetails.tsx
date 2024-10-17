@@ -29,7 +29,7 @@ const TaskDetails = () => {
   const dispatch = useAppDispatch();
   const { setShowDetails, isSmallScreen } = useScreenSize();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const { showLoader } = useLoader();
+  const { setLoading } = useLoader();
   const { getAllTasks } = useFetch();
 
   // State management
@@ -44,7 +44,7 @@ const TaskDetails = () => {
 
   const onSubmit = async (task: Task) => {
     if (!task) return;
-    showLoader(true);
+    setLoading(true);
     try {
       const res = await UPDATE_TASK(task);
       if (res) {
@@ -54,7 +54,7 @@ const TaskDetails = () => {
     } catch (error) {
       console.log(error);
     } finally {
-      showLoader(false);
+      setLoading(false);
     }
   };
 
@@ -102,17 +102,17 @@ const TaskDetails = () => {
   };
 
   const timeNoteUpdated = useMemo(
-    () => timeDistanceHandler(task.note_updated, false),
-    [task.note_updated]
+    () => timeDistanceHandler(task.note_updated_at, false),
+    [task.note_updated_at]
   );
 
   const timeTaskCreated = useMemo(
-    () => timeDistanceHandler(task.created, true),
-    [task.created]
+    () => timeDistanceHandler(task.created_at, true),
+    [task.created_at]
   );
 
   const deleteTaskHandler = async () => {
-    showLoader(true);
+    setLoading(true);
     try {
       await DELETE_TASK(task.id);
       await getAllTasks();
@@ -121,7 +121,7 @@ const TaskDetails = () => {
     } catch (error) {
       console.log(error);
     } finally {
-      showLoader(false);
+      setLoading(false);
     }
   };
 
