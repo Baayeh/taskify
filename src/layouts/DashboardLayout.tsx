@@ -1,5 +1,11 @@
 import { Outlet } from "react-router-dom";
-import { CreateTask, Header, Loader, SideBar } from "../components";
+import {
+  CreateTask,
+  Header,
+  Loader,
+  ProtectedRoute,
+  SideBar,
+} from "../components";
 import { useEffect, useRef, useState } from "react";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import TaskDetails from "@/components/task-details/TaskDetails";
@@ -32,7 +38,7 @@ const DashboardLayout = () => {
   }, [open, taskTitle]);
 
   return (
-    <>
+    <ProtectedRoute>
       <section className="relative h-screen border-x">
         <nav
           className={`fixed w-[20rem] ${isSmallScreen ? "hidden" : "block"}`}
@@ -80,7 +86,7 @@ const DashboardLayout = () => {
           </SheetContent>
         </Sheet>
       )}
-    </>
+    </ProtectedRoute>
   );
 };
 
