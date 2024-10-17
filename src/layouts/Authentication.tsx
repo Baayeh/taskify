@@ -7,7 +7,6 @@ const APP_NAME = "Taskify";
 
 const Authentication = () => {
   const [value, setValue] = useState("login");
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const title =
@@ -30,11 +29,7 @@ const Authentication = () => {
               <Login />
             </TabsContent>
             <TabsContent value="register">
-              <Register
-                handleTabChange={setValue}
-                loading={loading}
-                setLoading={setLoading}
-              />
+              <Register handleTabChange={setValue} />
             </TabsContent>
           </Tabs>
         </div>

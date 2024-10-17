@@ -6,14 +6,13 @@ import { Label } from "@/components/ui/label";
 import { REGISTER_USER } from "@/features/services/auth";
 import { Field, FieldProps, Form, Formik } from "formik";
 import { Fingerprint, Mail, User } from "lucide-react";
+import { useState } from "react";
 import toast from "react-hot-toast";
 import { ClipLoader } from "react-spinners";
 import * as Yup from "yup";
 
 interface RegisterProps {
   handleTabChange: (value: string) => void;
-  loading: boolean;
-  setLoading: (value: boolean) => void;
 }
 
 interface initialValueProps {
@@ -43,11 +42,9 @@ const validationSchema = Yup.object().shape({
     .required("Password is required"),
 });
 
-const Register: React.FC<RegisterProps> = ({
-  handleTabChange,
-  loading,
-  setLoading,
-}) => {
+const Register: React.FC<RegisterProps> = ({ handleTabChange }) => {
+  const [loading, setLoading] = useState(false);
+
   const handleRegister = async (values: initialValueProps) => {
     setLoading(true);
 
