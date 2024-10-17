@@ -23,6 +23,14 @@ export interface LoginUser {
   password: string;
 }
 
+// user login response
+export interface LoginResponse {
+  user: User;
+  access_token: string;
+  refresh_token: string;
+  message: string;
+}
+
 // user object
 export interface User {
   id: number;
