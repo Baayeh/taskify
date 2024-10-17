@@ -1,9 +1,20 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { REGISTER_USER } from "@/features/services/auth";
 import { Field, FieldProps, Form, Formik } from "formik";
 import { Fingerprint, Mail, User } from "lucide-react";
+import toast from "react-hot-toast";
+import { ClipLoader } from "react-spinners";
 import * as Yup from "yup";
+
+interface RegisterProps {
+  handleTabChange: (value: string) => void;
+  loading: boolean;
+  setLoading: (value: boolean) => void;
+}
 
 interface initialValueProps {
   first_name: string;
@@ -32,9 +43,33 @@ const validationSchema = Yup.object().shape({
     .required("Password is required"),
 });
 
-const Register = () => {
-  const handleRegister = () => {
-    console.log("register");
+const Register: React.FC<RegisterProps> = ({
+  handleTabChange,
+  loading,
+  setLoading,
+}) => {
+  const handleRegister = async (values: initialValueProps) => {
+    setLoading(true);
+
+    try {
+      const user = {
+        ...values,
+        password2: values.password,
+      };
+
+      await REGISTER_USER(user).then((res) => {
+        handleTabChange("login");
+        toast.success(res.message, {
+          style: {
+            minWidth: "23rem",
+          },
+        });
+      });
+    } catch (error: any) {
+      console.log(error.response.data);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -186,11 +221,11 @@ const Register = () => {
               <div className="flex justify-center">
                 <Button
                   type="submit"
-                  disabled={!isValid}
+                  disabled={!isValid || loading}
                   variant="default"
                   className="rounded-full w-[150px] h-12"
                 >
-                  Sign up for free
+                  {loading ? <ClipLoader color="#fff" /> : "Sign up for free"}
                 </Button>
               </div>
             </Form>

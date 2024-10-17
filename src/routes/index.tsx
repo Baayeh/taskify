@@ -1,7 +1,7 @@
 import { tasksRoutes } from "@/features";
 import { DashboardLayout, RootLayout } from "../layouts";
 import { Navigate } from "react-router-dom";
-import AuthLayout from "@/layouts/AuthLayout";
+import Authentication from "@/layouts/Authentication";
 
 const routes = [
   {
@@ -14,7 +14,7 @@ const routes = [
       },
       {
         path: "/auth",
-        element: <AuthLayout />,
+        element: <Authentication />,
       },
       {
         path: "/tasks",

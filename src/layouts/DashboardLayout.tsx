@@ -3,7 +3,6 @@ import { CreateTask, Header, Loader, SideBar } from "../components";
 import { useEffect, useRef, useState } from "react";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import TaskDetails from "@/components/task-details/TaskDetails";
-import { LoaderProvider } from "@/context";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import useCheckPathname from "@/hooks/useCheckPathname";
 
@@ -33,7 +32,7 @@ const DashboardLayout = () => {
   }, [open, taskTitle]);
 
   return (
-    <LoaderProvider>
+    <>
       <section className="relative h-screen border-x">
         <nav
           className={`fixed w-[20rem] ${isSmallScreen ? "hidden" : "block"}`}
@@ -81,7 +80,7 @@ const DashboardLayout = () => {
           </SheetContent>
         </Sheet>
       )}
-    </LoaderProvider>
+    </>
   );
 };
 
